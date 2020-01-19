@@ -1,0 +1,37 @@
+{% extends 'layout.html' %}
+
+{% block title %}
+واحدهای علموص | ثبت نام
+{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.10/dist/css/bootstrap-select.min.css">
+{% endblock %}
+
+{% block body %}
+
+  <main role="main" class="inner cover">
+    <form class="form-signin" method="POST">
+      <label for="inputEmail" class="sr-only">Email</label>
+      <input name="email" type="email" id="inputEmail" class="form-control" placeholder="ایمیل" required autofocus>
+      <label for="inputPassword" class="sr-only">Password</label>
+      <input name="password" type="password" id="inputPassword" class="form-control" placeholder="رمز" required>
+      <div>
+        <label>دانشکده: </label>
+        <select name="user_department" class="selectpicker">
+          {% for department in departments %}
+          <option>{{department}}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div>
+        <label>جنسیت: </label>
+        <select name="gender" class="selectpicker">
+          <option>پسر</option>
+          <option>دختر</option>
+        </select>
+      </div>
+      <button class="btn btn-lg btn-primary btn-block" type="submit">ثبت نام</button>
+    </form>
+  </main>
+{% endblock %}

@@ -1,0 +1,18 @@
+{% extends 'layout.html' %}
+
+{% block title %}
+واحدهای علموص | ورود
+{% endblock %}
+
+{% block body %}
+
+  <main role="main" class="inner cover">
+    <form class="form-signin" method="POST">
+      <label for="inputEmail" class="sr-only">Email</label>
+      <input name="email" type="email" id="inputEmail" class="form-control" placeholder="ایمیل" required autofocus>
+      <label for="inputPassword" class="sr-only">Password</label>
+      <input name="password" type="password" id="inputPassword" class="form-control" placeholder="رمز" required>
+      <button class="btn btn-lg btn-primary btn-block" type="submit">ورود</button>
+    </form>
+  </main>
+{% endblock %}

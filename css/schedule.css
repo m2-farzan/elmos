@@ -1,0 +1,108 @@
+html,
+body {
+  background-image: url("/images/bg-dark-2.jpg");
+}
+
+.cover-container {
+  max-width: 80em;
+}
+
+.sync {
+  font-size: 0.4em;
+  background-color: #33f;
+}
+
+.schedule-table {
+  background-image: url("/images/schedule_table.png");
+  background-size: contain;
+  width: 55em;
+  height: 30em;
+  position: relative;
+}
+
+.exam-table {
+  background-image: url("/images/exam_table.png");
+  background-size: contain;
+  width: 85em;
+  height: 30em;
+  position: relative;
+}
+
+.left-panel
+{
+  margin: 0.5em;
+}
+
+.dropdown-toggle
+{
+  width: 16em;
+  margin-bottom: 1em;
+  text-align: right;
+}
+
+.dropdown-menu, .show { right: 0 !important; }
+
+.unit-item
+{
+  border-radius: 0.4em;
+  position: absolute;
+  cursor: pointer;
+}
+
+.item-temp
+{
+  background-color: #fffc;
+}
+
+.item-normal
+{
+  background-color: #ffaa;
+}
+
+.item-text
+{
+  text-align: center;
+  margin: 4px;
+  font-size: 14px;
+  color: #000;
+}
+
+.item-name
+{
+  font-weight: bold;
+/*
+  padding-top: 0.6em;
+*/
+}
+.item-instructor
+{
+  font-size:12px;
+}
+
+.bootstrap-select>.dropdown-toggle.bs-placeholder, .bootstrap-select>.dropdown-toggle.bs-placeholder:active, .bootstrap-select>.dropdown-toggle.bs-placeholder:focus, .bootstrap-select>.dropdown-toggle.bs-placeholder:hover {
+    color: #000 !important;
+}
+
+.data_info
+{
+  font-size: 12px;
+  margin-bottom: 5px;
+}
+
+.dropdown-item
+{
+  text-align: right;
+}
+
+.list_unit_name
+{
+  margin-bottom: 0.2em;
+  font-size: 13px;
+}
+.list_unit_instructor
+{
+  color: #f00;
+  margin-bottom: 0.6em;
+  font-size: 11px;
+  font-weight: light;
+}
