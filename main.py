@@ -186,6 +186,8 @@ def user_units():
     unit_id = unit['unit_id']
     cur.execute("SELECT * FROM units WHERE id = %s", [ unit_id ])
     unit = cur.fetchone();
+    if unit == None:
+      continue
     r.append({'name':unit['name'], 'id':unit['id'], 'time_start_1':unit['time_start_1'], 'time_end_1':unit['time_end_1'], 'weekday_1':unit['weekday_1'], 'time_start_2':unit['time_start_2'], 'time_end_2':unit['time_end_2'], 'weekday_2':unit['weekday_2'], 'instructor':unit['instructor']})
   cur.close()
   return r
