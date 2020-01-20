@@ -3,8 +3,8 @@ import string
 import mysql.connector
 mydb = mysql.connector.connect(
   host="localhost",
-  user="root",
-  passwd="33",
+  user="elmos_vahed",
+  passwd="CHANGE_ME",
   database="elmos_units"
 )
 
@@ -50,15 +50,6 @@ def get_exam_datetime(txt):
   time = int(txt[(first_colon-2):first_colon]) + int(txt[(first_colon+1):(first_colon+3)]) / 60.0
   return date, time
   
-  
-
-f = open("golestan_output.txt")
-def fetch_data(f):
-  return (f.readline())[4:-6]
-
-# drop first 31 lines
-for i in range(0, 31):
-  f.readline()
 
 mycursor = mydb.cursor()
 mycursor.execute("DELETE FROM units")
@@ -66,75 +57,85 @@ mydb.commit()
 
 duty = 1500
 
-errors = []
+def fetch_data(f):
+  return (f.readline())[4:-6]
 
-for j in range(0,duty):
-  if (j%100 == 0):
-    print("progress: %d/%d"%(j,duty))
-  try:
-    term = fetch_data(f)
-    dep_id = fetch_data(f) # !
-    dep = fetch_data(f)
-    group_id = fetch_data(f)
-    group = fetch_data(f)
-    id_raw = fetch_data(f) # !
-    name = fetch_data(f) # !
-    weight = (fetch_data(f))[16:-7] # !
-    amali = fetch_data(f)
-    capacity = fetch_data(f) #!
-    registered = fetch_data(f) #!
-    waiting_list = fetch_data(f)
-    gender = fetch_data(f) #!
-    instructor = fetch_data(f) #!
-    schedule_time = fetch_data(f) #!
-    exam_time_x = fetch_data(f) #!
-    limit = fetch_data(f) #~
-    for i in range(0,6):
+def fetch_file(f, prefix = ""):
+  # drop first 31 lines
+  for i in range(0, 31):
+    f.readline()
+  errors = []
+  for j in range(0,duty):
+    if (j%100 == 0):
+      print("progress: %d/%d"%(j,duty))
+    try:
+      term = fetch_data(f)
+      dep_id = fetch_data(f) # !
+      dep = fetch_data(f)
+      group_id = fetch_data(f)
+      group = fetch_data(f)
+      id_raw = fetch_data(f) # !
+      name = fetch_data(f) # !
+      weight = (fetch_data(f))[16:-7] # !
+      amali = fetch_data(f)
+      capacity = fetch_data(f) #!
+      registered = fetch_data(f) #!
+      waiting_list = fetch_data(f)
+      gender = fetch_data(f) #!
+      instructor = fetch_data(f) #!
+      schedule_time = fetch_data(f) #!
+      exam_time_x = fetch_data(f) #!
+      limit = fetch_data(f) #~
+      for i in range(0,6):
+        f.readline()
+      desc = fetch_data(f) #~
       f.readline()
-    desc = fetch_data(f) #~
-    f.readline()
-    f.readline()
-    
-    id_f = id_raw[:7] + id_raw[8:10]
-    name_f = filter_farsi(name)
-    gender_f = 0
-    if gender == 'مرد':
-      gender_f = 1
-    if gender == 'زن':
-      gender_f = 2
-    instructor_f = filter_farsi(instructor)[:-1]
-    exam_day, exam_time = get_exam_datetime(exam_time_x)
-    
-    
-    if (dep_id == '90' and ('ورزش' in name)):
-      instructor_f = instructor_f + " - " + desc
-    
-    if (dep_id == '28' and ('تخصصی' in name_f)):
-      instructor_f = instructor_f + " - " + limit[23:23+30]
-    
-    days = extract_weekdays(schedule_time)
-    day_1 = days[0]
-    if len(days) > 1:
-      day_2 = days[1]
-    else:
-      day_2 = -1
-    start_1 = extract_week_times(schedule_time,1)[0]
-    end_1 = extract_week_times(schedule_time,1)[1]
-    if len(days) > 1:
-      start_2 = extract_week_times(schedule_time,2)[0]
-      end_2 = extract_week_times(schedule_time,2)[1]
-    else:
-      start_2 = -1
-      end_2 = -1
-  except :
-    print("parse error at %d [%f, %f]"%(j,exam_day, exam_time))
-    errors.append(name_f)
-    continue
-  #print("INSERT INTO units(id,department,name,instructor,weekday_1,time_start_1,time_end_1,weekday_2,time_start_2,time_end_2,exam_day,exam_time,capacity,registered_count,weight,gender) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"% (id_f,dep_id,name_f,instructor_f,day_1,start_1,end_1,day_2,start_2,end_2,1,8.0,30,0,2,0))
-  try:
-    mycursor.execute("INSERT INTO units(id,department,name,instructor,weekday_1,time_start_1,time_end_1,weekday_2,time_start_2,time_end_2,exam_day,exam_time,capacity,registered_count,weight,gender) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)", (id_f,dep_id,name_f,instructor_f,day_1,start_1,end_1,day_2,start_2,end_2,exam_day,exam_time,capacity,registered,weight,gender_f))
-    mydb.commit()
-  except:
-    print("commit error at %d"%(j))
-    
-print(errors)
+      f.readline()
+      
+      id_f = id_raw[:7] + id_raw[8:10]
+      name_f = prefix + filter_farsi(name)
+      gender_f = 0
+      if gender == 'مرد':
+        gender_f = 1
+      if gender == 'زن':
+        gender_f = 2
+      instructor_f = filter_farsi(instructor)[:-1]
+      exam_day, exam_time = get_exam_datetime(exam_time_x)
+      
+      
+      if (dep_id == '90' and ('ورزش' in name)):
+        instructor_f = instructor_f + " - " + desc
+      
+      if (dep_id == '28' and ('تخصصی' in name_f)):
+        instructor_f = instructor_f + " - " + limit[23:23+30]
+      
+      days = extract_weekdays(schedule_time)
+      day_1 = days[0]
+      if len(days) > 1:
+        day_2 = days[1]
+      else:
+        day_2 = -1
+      start_1 = extract_week_times(schedule_time,1)[0]
+      end_1 = extract_week_times(schedule_time,1)[1]
+      if len(days) > 1:
+        start_2 = extract_week_times(schedule_time,2)[0]
+        end_2 = extract_week_times(schedule_time,2)[1]
+      else:
+        start_2 = -1
+        end_2 = -1
+    except :
+      print("parse error at %d [%f, %f]"%(j,exam_day, exam_time))
+      errors.append(name_f)
+      continue
+    #print("INSERT INTO units(id,department,name,instructor,weekday_1,time_start_1,time_end_1,weekday_2,time_start_2,time_end_2,exam_day,exam_time,capacity,registered_count,weight,gender) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"% (id_f,dep_id,name_f,instructor_f,day_1,start_1,end_1,day_2,start_2,end_2,1,8.0,30,0,2,0))
+    try:
+      mycursor.execute("INSERT INTO units(id,department,name,instructor,weekday_1,time_start_1,time_end_1,weekday_2,time_start_2,time_end_2,exam_day,exam_time,capacity,registered_count,weight,gender) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)", (id_f,dep_id,name_f,instructor_f,day_1,start_1,end_1,day_2,start_2,end_2,exam_day,exam_time,capacity,registered,weight,gender_f))
+      mydb.commit()
+    except:
+      print("commit error at %d"%(j))
+  print(errors)
+
+f = open("data_avail.txt")
+fetch_file(f)
+g = open("data_na.txt")
+fetch_file(g, "غ‌.ق.اخذ - ")
