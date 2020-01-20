@@ -16,6 +16,12 @@ mysql = MySQL(app)
 
 
 @app.route('/')
+def index():
+  if session.get('logged_in', False):
+    return redirect(url_for('schedule'))
+  return render_template('home.html')
+  
+@app.route('/home')
 def home():
   return render_template('home.html')
   
@@ -88,7 +94,7 @@ def login_as(email, password):
 @app.route('/logout')
 def logout():
   session.clear();
-  return home()
+  return redirect(url_for('home'))
 
 @app.route('/schedule')
 def schedule():
