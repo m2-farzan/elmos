@@ -204,6 +204,8 @@ def user_exams():
   for exam in units:
     cur.execute("SELECT * FROM units WHERE id = %s", [ exam['unit_id'] ])
     unit = cur.fetchone()
+    if unit == None:
+      continue
     r.append( {'id':unit['id'], 'name':unit['name'], 'exam_day':unit['exam_day'], 'exam_time':unit['exam_time']} )
   cur.close()
   return r
@@ -223,6 +225,8 @@ def user_summary():
   for exam in units:
     cur.execute("SELECT * FROM units WHERE id = %s", [ exam['unit_id'] ])
     unit = cur.fetchone()
+    if unit == None:
+      continue
     r.append( {'id':unit['id'], 'name':unit['name'], 'instructor':unit['instructor'], 'weight':unit['weight']} )
     total_w = total_w + int(unit['weight'])
   cur.close()
