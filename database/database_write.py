@@ -45,7 +45,7 @@ def get_exam_datetime(txt):
   first_slash = txt.find('/')
   mon = int( txt[(first_slash+1):(first_slash+3)] )
   day = int( txt[(first_slash+4):(first_slash+6)] )
-  date = (mon-10)*30 + day #TODO!!! make 31 for first half months
+  date = (mon-1)*31 - max(mon-7,0)*1 + day
   first_colon = txt.find('-') - 3
   time = int(txt[(first_colon-2):first_colon]) + int(txt[(first_colon+1):(first_colon+3)]) / 60.0
   return date, time
