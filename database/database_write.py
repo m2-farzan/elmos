@@ -109,6 +109,10 @@ def fetch_file(f, prefix = ""):
       if (dep_id == '28' and ('تخصصی' in name_f)):
         instructor_f = instructor_f + " - " + limit[23:23+30]
       
+      # az mabani bargh
+      if len(id_raw) > 7 and id_raw[0:7] == '1211320':
+        instructor_f = "(" + "مخصوص " + filter_farsi( limit.split('،')[1][8:] ) + ") - " + instructor_f
+
       days = extract_weekdays(schedule_time)
       day_1 = days[0]
       if len(days) > 1:
