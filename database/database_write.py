@@ -111,7 +111,7 @@ def fetch_file(f, prefix = ""):
       
       # az mabani bargh
       if len(id_raw) > 7 and id_raw[0:7] == '1211320':
-        instructor_f = "(" + "مخصوص " + filter_farsi( limit.split('،')[1][8+6:] ) + ") - " + instructor_f
+        instructor_f = "(" + "مخصوص " + filter_farsi( limit.split('،')[1][8+8:] ) + ") - " + instructor_f
 
       days = extract_weekdays(schedule_time)
       day_1 = days[0]
