@@ -89,7 +89,9 @@ def fetch_file(f, prefix = ""):
         f.readline()
       desc = fetch_data(f) #~
       f.readline()
-      f.readline()
+      TAG = f.readline()
+      if 'tbody' in TAG:
+        break
       
       id_f = id_raw[:7] + id_raw[8:10]
       name_f = prefix + filter_farsi(name)
