@@ -2,6 +2,7 @@
 
 from flask import Flask, render_template, send_from_directory, request, session, redirect, url_for
 from flask_mysqldb import MySQL
+from hashlib import md5
 
 app = Flask(__name__, static_url_path='')
 app.secret_key = 'CHANGE_ME_2'
@@ -62,7 +63,8 @@ def create_user(email, password, user_dep_id, gender):
   if users > 0:
     cur.close()
     return render_template('sign-up-clash.html')
-  cur.execute("INSERT INTO users(email, password, department_id, gender) VALUES (%s, %s, %s, %s)", (email, password, user_dep_id, gender))
+  password_hash = md5(password.encode('utf-8')).hexdigest()
+  cur.execute("INSERT INTO users(email, password, department_id, gender) VALUES (%s, %s, %s, %s)", (email, password_hash, user_dep_id, gender))
   mysql.connection.commit()
   cur.close()
   return render_template('sign-up-good.html')
@@ -78,7 +80,8 @@ def login():
 
 def login_as(email, password):
   cur = mysql.connection.cursor()
-  users = cur.execute("SELECT * FROM users WHERE email = %s AND password = %s" , (email, password))
+  password_hash = md5(password.encode('utf-8')).hexdigest()
+  users = cur.execute("SELECT * FROM users WHERE email = %s AND (password = %s OR password = %s)" , (email, password, password_hash))
   if users == 0:
     cur.close()
     return render_template('login-check.html')
