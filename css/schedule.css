@@ -106,3 +106,17 @@ body {
   font-size: 11px;
   font-weight: light;
 }
+.list_unit_capacity
+{
+  color: #00f;
+  margin-bottom: 0.6em;
+  margin-right: 0.5em;
+  margin-left: 0.5em;
+  font-size: 11px;
+  font-weight: light;
+}
+.dropdown-item
+{
+  padding: 0rem;
+  padding-bottom: 0.5rem;
+}

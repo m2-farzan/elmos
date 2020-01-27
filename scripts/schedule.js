@@ -25,7 +25,7 @@ function upstream_add_remove(id, is_remove)
   show_connecting_icon();
 }
 
-function get_item_rect(id, name, instructor, weekday_1, start_time_1, end_time_1, temp) {
+function get_item_rect(id, name, instructor, weekday_1, start_time_1, end_time_1, registered, capacity, temp) {
     var div = document.createElement("div");
   var size_h = (end_time_1 - start_time_1) / 15.0;
   var size_v = 1.0 / 7.0;
@@ -57,15 +57,15 @@ function get_item_rect(id, name, instructor, weekday_1, start_time_1, end_time_1
   div.appendChild(p1);
   div.appendChild(p2);
   
-  div.setAttribute("title",id+"\n\n"+name+"\n"+"\n"+instructor);
+  div.setAttribute("title",id+"\n\n"+name+"\n"+"\n"+instructor+"\n\n"+registered+"/"+capacity);
   div.setAttribute("data-placement","bottom");
   
   return div;
 }
 
-function disp_item(id, name, instructor, weekday_1, start_time_1, end_time_1, weekday_2, start_time_2, end_time_2, temp) {
-  var div1 = get_item_rect(id, name, instructor, weekday_1, start_time_1, end_time_1, temp);
-  var div2 = get_item_rect(id, name, instructor, weekday_2, start_time_2, end_time_2, temp);
+function disp_item(id, name, instructor, weekday_1, start_time_1, end_time_1, weekday_2, start_time_2, end_time_2, registered, capacity, temp) {
+  var div1 = get_item_rect(id, name, instructor, weekday_1, start_time_1, end_time_1, registered, capacity, temp);
+  var div2 = get_item_rect(id, name, instructor, weekday_2, start_time_2, end_time_2, registered, capacity, temp);
   
   document.getElementById("schedule-table").appendChild(div1);
   document.getElementById("schedule-table").appendChild(div2);
@@ -99,8 +99,10 @@ function disp_p(p, temp)
   var start_time_2 = p.attr("data-time-start-2");
   var end_time_2 = p.attr("data-time-end-2");
   var weekday_2 = p.attr("data-weekday-2");
+  var registered = p.attr("data-registered");
+  var capacity = p.attr("data-capacity");
 
-  disp_item(id, name, instructor, weekday_1, start_time_1, end_time_1, weekday_2, start_time_2, end_time_2, temp);
+  disp_item(id, name, instructor, weekday_1, start_time_1, end_time_1, weekday_2, start_time_2, end_time_2, registered, capacity, temp);
   
   if (!temp)
     upstream_add_remove(id, false);
@@ -118,7 +120,7 @@ function rem_item(id, temp) {
 
 
 var myDefaultWhiteList = $.fn.selectpicker.Constructor.DEFAULTS.whiteList;
-myDefaultWhiteList.p = ['data-id', 'data-name', 'data-instructor', 'data-time-start-1', 'data-time-end-1', 'data-weekday-1', 'data-time-start-2', 'data-time-end-2', 'data-weekday-2'];
+myDefaultWhiteList.p = ['data-id', 'data-name', 'data-instructor', 'data-time-start-1', 'data-time-end-1', 'data-weekday-1', 'data-time-start-2', 'data-time-end-2', 'data-weekday-2', 'data-registered', 'data-capacity'];
 
 $(".unit_select").on('shown.bs.select', function() {
 

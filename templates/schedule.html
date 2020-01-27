@@ -6,8 +6,8 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="/css/base.css">
     <link rel="stylesheet" href="/css/style.css">
-    <link rel="stylesheet" href="/css/schedule.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.10/dist/css/bootstrap-select.min.css">
+    <link rel="stylesheet" href="/css/schedule.css">
   </head>
   <body>
       <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
@@ -39,7 +39,7 @@
             {% for unit in user_department.units %}
               <option 
               
-                data-content="<p id='{{unit.id}}_data' class='data_info' data-id='{{unit.id}}' data-name='{{unit.name}}' data-instructor='{{unit.instructor}}' data-time-start-1='{{unit.time_start_1}}' data-time-end-1='{{unit.time_end_1}}' data-weekday-1='{{unit.weekday_1}}' data-time-start-2='{{unit.time_start_2}}' data-time-end-2='{{unit.time_end_2}}' data-weekday-2='{{unit.weekday_2}}'><div><p class='list_unit_name'>{{unit.name}}</p><p class='list_unit_instructor'>{{unit.instructor}}</p></div>"
+                data-content="<p id='{{unit.id}}_data' class='data_info' data-id='{{unit.id}}' data-name='{{unit.name}}' data-instructor='{{unit.instructor}}' data-time-start-1='{{unit.time_start_1}}' data-time-end-1='{{unit.time_end_1}}' data-weekday-1='{{unit.weekday_1}}' data-time-start-2='{{unit.time_start_2}}' data-time-end-2='{{unit.time_end_2}}' data-weekday-2='{{unit.weekday_2}} data-registered='{{unit.registered}}' data-capacity='{{unit.capacity}}''><div><p class='list_unit_name'>{{unit.name}}</p><p class='list_unit_instructor'>{{unit.instructor}}<span class='list_unit_capacity'>{{unit.registered}}/{{unit.capacity}}</span></p></div>"
               
                >{{unit.id}}</option>
             {% endfor %}
@@ -53,7 +53,7 @@
           {% for unit in departments_by_key.k90.units %}
             <option 
             
-              data-content="<p id='{{unit.id}}_data' class='data_info' data-id='{{unit.id}}' data-name='{{unit.name}}' data-instructor='{{unit.instructor}}' data-time-start-1='{{unit.time_start_1}}' data-time-end-1='{{unit.time_end_1}}' data-weekday-1='{{unit.weekday_1}}' data-time-start-2='{{unit.time_start_2}}' data-time-end-2='{{unit.time_end_2}}' data-weekday-2='{{unit.weekday_2}}'><div><p class='list_unit_name'>{{unit.name}}</p><p class='list_unit_instructor'>{{unit.instructor}}</p></div>"
+              data-content="<p id='{{unit.id}}_data' class='data_info' data-id='{{unit.id}}' data-name='{{unit.name}}' data-instructor='{{unit.instructor}}' data-time-start-1='{{unit.time_start_1}}' data-time-end-1='{{unit.time_end_1}}' data-weekday-1='{{unit.weekday_1}}' data-time-start-2='{{unit.time_start_2}}' data-time-end-2='{{unit.time_end_2}}' data-weekday-2='{{unit.weekday_2}} data-registered='{{unit.registered}}' data-capacity='{{unit.capacity}}''><div><p class='list_unit_name'>{{unit.name}}</p><p class='list_unit_instructor'>{{unit.instructor}}<span class='list_unit_capacity'>{{unit.registered}}/{{unit.capacity}}</span></p></div>"
             
              >{{unit.id}}</option>
           {% endfor %}
@@ -66,7 +66,7 @@
           {% for unit in departments_by_key.k14.units %}
             <option 
             
-              data-content="<p id='{{unit.id}}_data' class='data_info' data-id='{{unit.id}}' data-name='{{unit.name}}' data-instructor='{{unit.instructor}}' data-time-start-1='{{unit.time_start_1}}' data-time-end-1='{{unit.time_end_1}}' data-weekday-1='{{unit.weekday_1}}' data-time-start-2='{{unit.time_start_2}}' data-time-end-2='{{unit.time_end_2}}' data-weekday-2='{{unit.weekday_2}}'><div><p class='list_unit_name'>{{unit.name}}</p><p class='list_unit_instructor'>{{unit.instructor}}</p></div>"
+              data-content="<p id='{{unit.id}}_data' class='data_info' data-id='{{unit.id}}' data-name='{{unit.name}}' data-instructor='{{unit.instructor}}' data-time-start-1='{{unit.time_start_1}}' data-time-end-1='{{unit.time_end_1}}' data-weekday-1='{{unit.weekday_1}}' data-time-start-2='{{unit.time_start_2}}' data-time-end-2='{{unit.time_end_2}}' data-weekday-2='{{unit.weekday_2}} data-registered='{{unit.registered}}' data-capacity='{{unit.capacity}}''><div><p class='list_unit_name'>{{unit.name}}</p><p class='list_unit_instructor'>{{unit.instructor}}<span class='list_unit_capacity'>{{unit.registered}}/{{unit.capacity}}</span></p></div>"
             
              >{{unit.id}}</option>
           {% endfor %}
@@ -78,7 +78,7 @@
           {% for unit in departments_by_key.k16.units %}
             <option 
             
-              data-content="<p id='{{unit.id}}_data' class='data_info' data-id='{{unit.id}}' data-name='{{unit.name}}' data-instructor='{{unit.instructor}}' data-time-start-1='{{unit.time_start_1}}' data-time-end-1='{{unit.time_end_1}}' data-weekday-1='{{unit.weekday_1}}' data-time-start-2='{{unit.time_start_2}}' data-time-end-2='{{unit.time_end_2}}' data-weekday-2='{{unit.weekday_2}}'><div><p class='list_unit_name'>{{unit.name}}</p><p class='list_unit_instructor'>{{unit.instructor}}</p></div>"
+              data-content="<p id='{{unit.id}}_data' class='data_info' data-id='{{unit.id}}' data-name='{{unit.name}}' data-instructor='{{unit.instructor}}' data-time-start-1='{{unit.time_start_1}}' data-time-end-1='{{unit.time_end_1}}' data-weekday-1='{{unit.weekday_1}}' data-time-start-2='{{unit.time_start_2}}' data-time-end-2='{{unit.time_end_2}}' data-weekday-2='{{unit.weekday_2}} data-registered='{{unit.registered}}' data-capacity='{{unit.capacity}}''><div><p class='list_unit_name'>{{unit.name}}</p><p class='list_unit_instructor'>{{unit.instructor}}<span class='list_unit_capacity'>{{unit.registered}}/{{unit.capacity}}</span></p></div>"
             
              >{{unit.id}}</option>
           {% endfor %}
@@ -91,7 +91,7 @@
           {% for unit in departments_by_key.k26.units %}
             <option 
             
-              data-content="<p id='{{unit.id}}_data' class='data_info' data-id='{{unit.id}}' data-name='{{unit.name}}' data-instructor='{{unit.instructor}}' data-time-start-1='{{unit.time_start_1}}' data-time-end-1='{{unit.time_end_1}}' data-weekday-1='{{unit.weekday_1}}' data-time-start-2='{{unit.time_start_2}}' data-time-end-2='{{unit.time_end_2}}' data-weekday-2='{{unit.weekday_2}}'><div><p class='list_unit_name'>{{unit.name}}</p><p class='list_unit_instructor'>{{unit.instructor}}</p></div>"
+              data-content="<p id='{{unit.id}}_data' class='data_info' data-id='{{unit.id}}' data-name='{{unit.name}}' data-instructor='{{unit.instructor}}' data-time-start-1='{{unit.time_start_1}}' data-time-end-1='{{unit.time_end_1}}' data-weekday-1='{{unit.weekday_1}}' data-time-start-2='{{unit.time_start_2}}' data-time-end-2='{{unit.time_end_2}}' data-weekday-2='{{unit.weekday_2}} data-registered='{{unit.registered}}' data-capacity='{{unit.capacity}}''><div><p class='list_unit_name'>{{unit.name}}</p><p class='list_unit_instructor'>{{unit.instructor}}</p></div>"
             
              >{{unit.id}}</option>
           {% endfor %}
@@ -104,7 +104,7 @@
           {% for unit in departments_by_key.k28.units %}
             <option 
             
-              data-content="<p id='{{unit.id}}_data' class='data_info' data-id='{{unit.id}}' data-name='{{unit.name}}' data-instructor='{{unit.instructor}}' data-time-start-1='{{unit.time_start_1}}' data-time-end-1='{{unit.time_end_1}}' data-weekday-1='{{unit.weekday_1}}' data-time-start-2='{{unit.time_start_2}}' data-time-end-2='{{unit.time_end_2}}' data-weekday-2='{{unit.weekday_2}}'><div><p class='list_unit_name'>{{unit.name}}</p><p class='list_unit_instructor'>{{unit.instructor}}</p></div>"
+              data-content="<p id='{{unit.id}}_data' class='data_info' data-id='{{unit.id}}' data-name='{{unit.name}}' data-instructor='{{unit.instructor}}' data-time-start-1='{{unit.time_start_1}}' data-time-end-1='{{unit.time_end_1}}' data-weekday-1='{{unit.weekday_1}}' data-time-start-2='{{unit.time_start_2}}' data-time-end-2='{{unit.time_end_2}}' data-weekday-2='{{unit.weekday_2}} data-registered='{{unit.registered}}' data-capacity='{{unit.capacity}}''><div><p class='list_unit_name'>{{unit.name}}</p><p class='list_unit_instructor'>{{unit.instructor}}<span class='list_unit_capacity'>{{unit.registered}}/{{unit.capacity}}</span></p></div>"
             
              >{{unit.id}}</option>
           {% endfor %}
@@ -116,7 +116,7 @@
           {% for unit in departments_by_key.k27.units %}
             <option 
             
-              data-content="<p id='{{unit.id}}_data' class='data_info' data-id='{{unit.id}}' data-name='{{unit.name}}' data-instructor='{{unit.instructor}}' data-time-start-1='{{unit.time_start_1}}' data-time-end-1='{{unit.time_end_1}}' data-weekday-1='{{unit.weekday_1}}' data-time-start-2='{{unit.time_start_2}}' data-time-end-2='{{unit.time_end_2}}' data-weekday-2='{{unit.weekday_2}}'><div><p class='list_unit_name'>{{unit.name}}</p><p class='list_unit_instructor'>{{unit.instructor}}</p></div>"
+              data-content="<p id='{{unit.id}}_data' class='data_info' data-id='{{unit.id}}' data-name='{{unit.name}}' data-instructor='{{unit.instructor}}' data-time-start-1='{{unit.time_start_1}}' data-time-end-1='{{unit.time_end_1}}' data-weekday-1='{{unit.weekday_1}}' data-time-start-2='{{unit.time_start_2}}' data-time-end-2='{{unit.time_end_2}}' data-weekday-2='{{unit.weekday_2}} data-registered='{{unit.registered}}' data-capacity='{{unit.capacity}}''><div><p class='list_unit_name'>{{unit.name}}</p><p class='list_unit_instructor'>{{unit.instructor}}<span class='list_unit_capacity'>{{unit.registered}}/{{unit.capacity}}</span></p></div>"
             
              >{{unit.id}}</option>
           {% endfor %}
@@ -132,7 +132,7 @@
           {% for unit in dep.units %}
             <option 
             
-              data-content="<p id='{{unit.id}}_data' class='data_info' data-id='{{unit.id}}' data-name='{{unit.name}}' data-instructor='{{unit.instructor}}' data-time-start-1='{{unit.time_start_1}}' data-time-end-1='{{unit.time_end_1}}' data-weekday-1='{{unit.weekday_1}}' data-time-start-2='{{unit.time_start_2}}' data-time-end-2='{{unit.time_end_2}}' data-weekday-2='{{unit.weekday_2}}'><div><p class='list_unit_name'>{{unit.name}}</p><p class='list_unit_instructor'>{{unit.instructor}}</p></div>"
+              data-content="<p id='{{unit.id}}_data' class='data_info' data-id='{{unit.id}}' data-name='{{unit.name}}' data-instructor='{{unit.instructor}}' data-time-start-1='{{unit.time_start_1}}' data-time-end-1='{{unit.time_end_1}}' data-weekday-1='{{unit.weekday_1}}' data-time-start-2='{{unit.time_start_2}}' data-time-end-2='{{unit.time_end_2}}' data-weekday-2='{{unit.weekday_2}} data-registered='{{unit.registered}}' data-capacity='{{unit.capacity}}''><div><p class='list_unit_name'>{{unit.name}}</p><p class='list_unit_instructor'>{{unit.instructor}}<span class='list_unit_capacity'>{{unit.registered}}/{{unit.capacity}}</span></p></div>"
             
              >{{unit.id}}</option>
           {% endfor %}
@@ -168,7 +168,7 @@
       $('.unit_select').selectpicker('val',arr);
     });
     {% for unit in user_units %}
-    disp_item({{unit.id}}, '{{unit.name}}', '{{unit.instructor}}', {{unit.weekday_1}}, {{unit.time_start_1}}, {{unit.time_end_1}}, {{unit.weekday_2}}, {{unit.time_start_2}}, {{unit.time_end_2}}, false);
+    disp_item({{unit.id}}, '{{unit.name}}', '{{unit.instructor}}', {{unit.weekday_1}}, {{unit.time_start_1}}, {{unit.time_end_1}}, {{unit.weekday_2}}, {{unit.time_start_2}}, {{unit.time_end_2}}, {{unit.registered}}, {{unit.capacity}}, false);
     {% endfor %}
     </script>
   </body>

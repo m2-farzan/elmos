@@ -111,7 +111,7 @@ def parse_dep(dep, cur):
   cur.execute("SELECT * FROM units WHERE department=%s AND gender IN(0,%s) AND obsolete=0 ORDER BY name ASC",(dep['id'], session['gender']))
   units = cur.fetchall()
   for unit in units:
-    rr['units'].append({'name':unit['name'], 'id':unit['id'], 'time_start_1':unit['time_start_1'], 'time_end_1':unit['time_end_1'], 'weekday_1':unit['weekday_1'], 'time_start_2':unit['time_start_2'], 'time_end_2':unit['time_end_2'], 'weekday_2':unit['weekday_2'], 'instructor':unit['instructor']})
+    rr['units'].append({'name':unit['name'], 'id':unit['id'], 'time_start_1':unit['time_start_1'], 'time_end_1':unit['time_end_1'], 'weekday_1':unit['weekday_1'], 'time_start_2':unit['time_start_2'], 'time_end_2':unit['time_end_2'], 'weekday_2':unit['weekday_2'], 'instructor':unit['instructor'], 'capacity':unit['capacity'], 'registered':unit['registered_count']})
   return rr
   
 def get_dep(dep_id):
@@ -196,7 +196,9 @@ def user_units():
     if unit == None:
       continue
     disp_name = unit['name'] if unit['obsolete'] == 0 else '[حذف شده] - ' + unit['name']
-    r.append({'name':disp_name, 'id':unit['id'], 'time_start_1':unit['time_start_1'], 'time_end_1':unit['time_end_1'], 'weekday_1':unit['weekday_1'], 'time_start_2':unit['time_start_2'], 'time_end_2':unit['time_end_2'], 'weekday_2':unit['weekday_2'], 'instructor':unit['instructor']})
+    if unit['registered_count'] >= unit['capacity']:
+      disp_name = '[پُر شده] ' + disp_name
+    r.append({'name':disp_name, 'id':unit['id'], 'time_start_1':unit['time_start_1'], 'time_end_1':unit['time_end_1'], 'weekday_1':unit['weekday_1'], 'time_start_2':unit['time_start_2'], 'time_end_2':unit['time_end_2'], 'weekday_2':unit['weekday_2'], 'instructor':unit['instructor'], 'registered':unit['registered_count'], 'capacity':unit['capacity']})
   cur.close()
   return r
   
@@ -236,6 +238,8 @@ def user_summary():
     if unit == None:
       continue
     disp_name = unit['name'] if unit['obsolete'] == 0 else '[حذف شده] - ' + unit['name']
+    if unit['registered_count'] >= unit['capacity']:
+      disp_name = '[پُر شده] ' + disp_name
     r.append( {'id':disp_name, 'name':unit['name'], 'instructor':unit['instructor'], 'weight':unit['weight']} )
     total_w = total_w + int(unit['weight'])
   cur.close()
