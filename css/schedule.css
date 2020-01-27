@@ -24,7 +24,7 @@ body {
   background-image: url("/images/exam_table.png");
   background-size: contain;
   width: 85em;
-  height: 30em;
+  padding-bottom: 34.8%;
   position: relative;
 }
 
