@@ -98,10 +98,11 @@ def logout():
 
 @app.route('/schedule')
 def schedule():
+  last_db_update = open('database/last_db_update', 'r').readline()
   if not session.get('logged_in', False):
     return render_template('log-in-dude.html')
   else:
-    return render_template('schedule.html', departments_list=departments_list(), user_department=current_user_department(), user_units=user_units(), departments_by_key=departments_by_key())
+    return render_template('schedule.html', departments_list=departments_list(), user_department=current_user_department(), user_units=user_units(), departments_by_key=departments_by_key(), last_update=last_db_update)
 
 def parse_dep(dep, cur):
   rr = {}

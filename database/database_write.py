@@ -1,6 +1,8 @@
 #!/usr/bin/python3
 import string
 import mysql.connector
+from py_modules.persian_datetime import now_to_str
+
 mydb = mysql.connector.connect(
   host="localhost",
   user="elmos_vahed",
@@ -146,5 +148,8 @@ fetch_file(g, "غ‌.ق.اخذ - ")
 
 try:
   mydb.commit()
+  t = open("last_db_update", 'w')
+  t.write(now_to_str())
+# os.putenv('ELMOS_DB_LAST_UPDATE', now_to_str())
 except:
   print("commit error at the end")
