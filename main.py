@@ -243,7 +243,7 @@ def user_summary():
     disp_name = unit['name'] if unit['obsolete'] == 0 else '[حذف شده] - ' + unit['name']
     if unit['registered_count'] >= unit['capacity']:
       disp_name = '[پُر شده] ' + disp_name
-    r.append( {'id':disp_name, 'name':unit['name'], 'instructor':unit['instructor'], 'weight':unit['weight']} )
+    r.append( {'id':unit['id'], 'name':disp_name, 'instructor':unit['instructor'], 'weight':unit['weight']} )
     total_w = total_w + int(unit['weight'])
   cur.close()
   return r, total_w
