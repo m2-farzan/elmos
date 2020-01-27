@@ -54,7 +54,7 @@ def get_exam_datetime(txt):
   
 
 mycursor = mydb.cursor()
-mycursor.execute("DELETE FROM units")
+mycursor.execute("UPDATE units SET obsolete = 1")
 
 duty = 1500
 
@@ -136,7 +136,7 @@ def fetch_file(f, prefix = ""):
       continue
     #print("INSERT INTO units(id,department,name,instructor,weekday_1,time_start_1,time_end_1,weekday_2,time_start_2,time_end_2,exam_day,exam_time,capacity,registered_count,weight,gender) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"% (id_f,dep_id,name_f,instructor_f,day_1,start_1,end_1,day_2,start_2,end_2,1,8.0,30,0,2,0))
     try:
-      mycursor.execute("INSERT INTO units(id,department,name,instructor,weekday_1,time_start_1,time_end_1,weekday_2,time_start_2,time_end_2,exam_day,exam_time,capacity,registered_count,weight,gender) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)", (id_f,dep_id,name_f,instructor_f,day_1,start_1,end_1,day_2,start_2,end_2,exam_day,exam_time,capacity,registered,weight,gender_f))
+      mycursor.execute("REPLACE INTO units(id,department,name,instructor,weekday_1,time_start_1,time_end_1,weekday_2,time_start_2,time_end_2,exam_day,exam_time,capacity,registered_count,weight,gender,obsolete) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,0)", (id_f,dep_id,name_f,instructor_f,day_1,start_1,end_1,day_2,start_2,end_2,exam_day,exam_time,capacity,registered,weight,gender_f))
     except:
       print("insert error at %d"%(j))
   print(errors)
@@ -144,7 +144,7 @@ def fetch_file(f, prefix = ""):
 f = open("data_avail.txt")
 fetch_file(f)
 g = open("data_na.txt")
-fetch_file(g, "غ‌.ق.اخذ - ")
+fetch_file(g, "غ.ق.اخذ")
 
 try:
   mydb.commit()

@@ -108,7 +108,7 @@ def parse_dep(dep, cur):
   rr = {}
   rr['name'] = dep['name']
   rr['units'] = []
-  cur.execute("SELECT * FROM units WHERE department=%s AND gender IN(0,%s) ORDER BY name ASC",(dep['id'], session['gender']))
+  cur.execute("SELECT * FROM units WHERE department=%s AND gender IN(0,%s) AND obsolete=0 ORDER BY name ASC",(dep['id'], session['gender']))
   units = cur.fetchall()
   for unit in units:
     rr['units'].append({'name':unit['name'], 'id':unit['id'], 'time_start_1':unit['time_start_1'], 'time_end_1':unit['time_end_1'], 'weekday_1':unit['weekday_1'], 'time_start_2':unit['time_start_2'], 'time_end_2':unit['time_end_2'], 'weekday_2':unit['weekday_2'], 'instructor':unit['instructor']})
@@ -195,7 +195,8 @@ def user_units():
     unit = cur.fetchone();
     if unit == None:
       continue
-    r.append({'name':unit['name'], 'id':unit['id'], 'time_start_1':unit['time_start_1'], 'time_end_1':unit['time_end_1'], 'weekday_1':unit['weekday_1'], 'time_start_2':unit['time_start_2'], 'time_end_2':unit['time_end_2'], 'weekday_2':unit['weekday_2'], 'instructor':unit['instructor']})
+    disp_name = unit['name'] if unit['obsolete'] == 0 else '[حذف شده] - ' + unit['name']
+    r.append({'name':disp_name, 'id':unit['id'], 'time_start_1':unit['time_start_1'], 'time_end_1':unit['time_end_1'], 'weekday_1':unit['weekday_1'], 'time_start_2':unit['time_start_2'], 'time_end_2':unit['time_end_2'], 'weekday_2':unit['weekday_2'], 'instructor':unit['instructor']})
   cur.close()
   return r
   
@@ -234,7 +235,8 @@ def user_summary():
     unit = cur.fetchone()
     if unit == None:
       continue
-    r.append( {'id':unit['id'], 'name':unit['name'], 'instructor':unit['instructor'], 'weight':unit['weight']} )
+    disp_name = unit['name'] if unit['obsolete'] == 0 else '[حذف شده] - ' + unit['name']
+    r.append( {'id':disp_name, 'name':unit['name'], 'instructor':unit['instructor'], 'weight':unit['weight']} )
     total_w = total_w + int(unit['weight'])
   cur.close()
   return r, total_w
