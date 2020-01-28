@@ -199,8 +199,6 @@ def user_units():
     if unit == None:
       continue
     disp_name = unit['name'] if unit['obsolete'] == 0 else '[حذف شده] - ' + unit['name']
-    if unit['registered_count'] >= unit['capacity']:
-      disp_name = '[پُر شده] ' + disp_name
     r.append({'name':disp_name, 'id':unit['id'], 'time_start_1':unit['time_start_1'], 'time_end_1':unit['time_end_1'], 'weekday_1':unit['weekday_1'], 'time_start_2':unit['time_start_2'], 'time_end_2':unit['time_end_2'], 'weekday_2':unit['weekday_2'], 'instructor':unit['instructor'], 'registered':unit['registered_count'], 'capacity':unit['capacity']})
   cur.close()
   return r
@@ -241,8 +239,6 @@ def user_summary():
     if unit == None:
       continue
     disp_name = unit['name'] if unit['obsolete'] == 0 else '[حذف شده] - ' + unit['name']
-    if unit['registered_count'] >= unit['capacity']:
-      disp_name = '[پُر شده] ' + disp_name
     r.append( {'id':unit['id'], 'name':disp_name, 'instructor':unit['instructor'], 'weight':unit['weight']} )
     total_w = total_w + int(unit['weight'])
   cur.close()
