@@ -2,7 +2,7 @@ function get_item_rect(id, name, day, time) {
   var div = document.createElement("div");
   var size_h = (1) / 23.0;
   var size_v = 3.0 / 12.0;
-  var right = (parseFloat(day) - 78.0) / 23.0;
+  var right = (parseFloat(day) - 292.0) / 23.0;
   var top = (parseFloat(time) - 6.0) / 12.0;
   div.setAttribute("style", "width: " + size_h*100.0 + "%; height: " + size_v*100.0 + "%; right: " + right*100.0 + "%; top: " + top*100.0 + "%;");
 
