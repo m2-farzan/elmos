@@ -14,8 +14,12 @@ def filter_farsi(txt):
   return txt.replace( 'ي', 'ی').replace('ك', 'ک').replace('<br>','،')
   
 def extract_weekdays(txt):
+  if txt == "":
+    raise Exception("class time not mentioned")
   dd = [0,0,0,0,0,0]
   d = txt.count('شنبه')
+  if d == 3:
+    raise Exception("three days a week")
   dd[1] = txt.count('يك شنبه')
   dd[2] = txt.count('دو شنبه')
   dd[3] = txt.count('سه شنبه')
@@ -28,6 +32,8 @@ def extract_weekdays(txt):
       return [i,i]
     elif dd[i] == 1:
       weekdays.append(i)
+  if len(weekdays) < 1 or len(weekdays) > 2:
+      raise Exception("bad weekdays")
   return weekdays
   
 def extract_week_times(txt, no):
@@ -35,7 +41,12 @@ def extract_week_times(txt, no):
     cursor = txt.find('شنبه')
   else:
     cursor = txt.rfind('شنبه')
-  cursor = min(txt.find('0', cursor), txt.find('1', cursor))
+  first_zero = txt.find('0', cursor)
+  first_one = txt.find('1', cursor)
+  if first_one == -1:
+    cursor = first_zero
+  else:
+    cursor = min(first_zero, first_one)
   time_text = txt[cursor:(cursor+11)]
   start = int(time_text[0:2]) + int(time_text[3:5])/60.0
   end = int(time_text[6:8]) + int(time_text[9:11])/60.0
@@ -130,21 +141,28 @@ def fetch_file(f, prefix = ""):
       else:
         start_2 = -1
         end_2 = -1
-    except :
+    except Exception as e:
       print("parse error at %d [%f, %f]"%(j,exam_day, exam_time))
-      errors.append(name_f)
+      errors.append(('PE', id_raw, name_f, str(e)))
       continue
     #print("INSERT INTO units(id,department,name,instructor,weekday_1,time_start_1,time_end_1,weekday_2,time_start_2,time_end_2,exam_day,exam_time,capacity,registered_count,weight,gender) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"% (id_f,dep_id,name_f,instructor_f,day_1,start_1,end_1,day_2,start_2,end_2,1,8.0,30,0,2,0))
     try:
       mycursor.execute("REPLACE INTO units(id,department,name,instructor,weekday_1,time_start_1,time_end_1,weekday_2,time_start_2,time_end_2,exam_day,exam_time,capacity,registered_count,weight,gender,obsolete) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,0)", (id_f,dep_id,name_f,instructor_f,day_1,start_1,end_1,day_2,start_2,end_2,exam_day,exam_time,capacity,registered,weight,gender_f))
     except:
       print("insert error at %d"%(j))
-  print(errors)
+      errors.append(('DbE', id_raw, name_f, 'DB down'))
+  h = open("errors.txt", 'a')
+  for er in errors:
+      h.write("-- %s: %s (%s) | %s\n"%er)
 
+with open("errors.txt", 'w') as errors_file:
+    errors_file.write('ق.اخذ: \n\n')
 f = open("data_avail.txt")
 fetch_file(f)
+with open("errors.txt", 'a') as errors_file:
+    errors_file.write('\n\nغ.ق.اخذ: \n\n')
 g = open("data_na.txt")
-fetch_file(g, "غ.ق.اخذ")
+fetch_file(g, "غ.ق.اخذ ")
 
 try:
   mydb.commit()

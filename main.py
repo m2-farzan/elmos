@@ -244,5 +244,10 @@ def user_summary():
   cur.close()
   return r, total_w
 
+@app.route('/database_notes')
+def database_notes():
+  content = open('database/errors.txt', 'r').readlines()
+  return render_template('database_notes.html', content=content)
+
 if __name__ == '__main__':
   app.run(host="0.0.0.0", port=90, debug=True)

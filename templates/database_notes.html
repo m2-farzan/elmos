@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html dir="rtl">
+  <head>
+    <meta charset="utf-8">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-176268794-3"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-176268794-3');
+    </script>
+    <title>برنامه هفتگی</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/base.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/schedule.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.10/dist/css/bootstrap-select.min.css">
+  </head>
+  <body>
+      <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
+    <header class="masthead mb-auto">
+        <div class="inner">
+          <h3 class="masthead-brand">
+            <a href="/home">دستیار انتخاب واحد علموصیها (آزمایشی)</a>
+            <small id="connecting" class="sync invisible">در حال همگام سازی...</small>
+          </h3>
+          <nav class="nav nav-masthead justify-content-center">
+            <a class="nav-link" href="/schedule">برنامه هفتگی</a>
+            <a class="nav-link" href="/exams">برنامه امتحانات</a>
+            <a class="nav-link" href="/summary">خلاصه وضعیت</a>
+            <a class="nav-link" href="/logout">خروج</a>
+          </nav>
+        </div>
+    </header>
+    
+    <main role="main" class="inner cover">
+     <h3 style="padding-top: 2em;">نواقص دیتابیس:</h3>
+     <p>دیتابیس سایت با یک روش نیمه-خودکار از خروجی گزارش ۱۰۲ گلستان به روز رسانی می‌شود. در حال حاضر، انتقال درس‌های زیر از گلستان به سایت ناموفق بوده است که دلیل احتمالی هر مورد به اختصار نوشته شده است.</p>
+     {% for line in content %}
+     <p>{{line}}</p>
+     {% endfor %}
+    </main>
+    
+    <footer class="mastfoot mt-auto">
+      <div class="inner">
+        <p>
+  این سایت شخصی و غیر رسمیه و با دانشگاه علم و صنعت در ارتباط نیست. ایمیل من: elmos.vahed@gmail.com
+        </p>
+      </div>
+    </footer>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.10/dist/js/bootstrap-select.min.js"></script>
+  </body>
+</html>
