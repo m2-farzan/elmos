@@ -63,12 +63,14 @@ function get_item_rect(id, name, instructor, weekday_1, start_time_1, end_time_1
   return div;
 }
 
-function disp_item(id, name, instructor, weekday_1, start_time_1, end_time_1, weekday_2, start_time_2, end_time_2, registered, capacity, temp) {
+function disp_item(id, name, instructor, weekday_1, start_time_1, end_time_1, weekday_2, start_time_2, end_time_2, weekday_3, start_time_3, end_time_3, registered, capacity, temp) {
   var div1 = get_item_rect(id, name, instructor, weekday_1, start_time_1, end_time_1, registered, capacity, temp);
   var div2 = get_item_rect(id, name, instructor, weekday_2, start_time_2, end_time_2, registered, capacity, temp);
+  var div3 = get_item_rect(id, name, instructor, weekday_3, start_time_3, end_time_3, registered, capacity, temp);
   
   document.getElementById("schedule-table").appendChild(div1);
   document.getElementById("schedule-table").appendChild(div2);
+  document.getElementById("schedule-table").appendChild(div3);
   
   //$('.unit-item').tooltip({container:'body'});
   if(!temp) {
@@ -85,6 +87,7 @@ function disp_item(id, name, instructor, weekday_1, start_time_1, end_time_1, we
     
     $(div1).click(click_remove);
     $(div2).click(click_remove);
+    $(div3).click(click_remove);
   }
 }
 
@@ -99,10 +102,13 @@ function disp_p(p, temp)
   var start_time_2 = p.attr("data-time-start-2");
   var end_time_2 = p.attr("data-time-end-2");
   var weekday_2 = p.attr("data-weekday-2");
+  var start_time_3 = p.attr("data-time-start-3");
+  var end_time_3 = p.attr("data-time-end-3");
+  var weekday_3 = p.attr("data-weekday-3");
   var registered = p.attr("data-registered");
   var capacity = p.attr("data-capacity");
 
-  disp_item(id, name, instructor, weekday_1, start_time_1, end_time_1, weekday_2, start_time_2, end_time_2, registered, capacity, temp);
+  disp_item(id, name, instructor, weekday_1, start_time_1, end_time_1, weekday_2, start_time_2, end_time_2, weekday_3, start_time_3, end_time_3, registered, capacity, temp);
   
   if (!temp)
     upstream_add_remove(id, false);
@@ -120,7 +126,7 @@ function rem_item(id, temp) {
 
 
 var myDefaultWhiteList = $.fn.selectpicker.Constructor.DEFAULTS.whiteList;
-myDefaultWhiteList.p = ['data-id', 'data-name', 'data-instructor', 'data-time-start-1', 'data-time-end-1', 'data-weekday-1', 'data-time-start-2', 'data-time-end-2', 'data-weekday-2', 'data-registered', 'data-capacity'];
+myDefaultWhiteList.p = ['data-id', 'data-name', 'data-instructor', 'data-time-start-1', 'data-time-end-1', 'data-weekday-1', 'data-time-start-2', 'data-time-end-2', 'data-weekday-2', 'data-time-start-3', 'data-time-end-3', 'data-weekday-3', 'data-registered', 'data-capacity'];
 
 $(".unit_select").on('shown.bs.select', function() {
 

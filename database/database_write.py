@@ -18,8 +18,10 @@ def extract_weekdays(txt):
     raise Exception("class time not mentioned")
   dd = [0,0,0,0,0,0]
   d = txt.count('شنبه')
-  if d == 3:
-    raise Exception("three days a week")
+  if d > 3:
+    raise Exception("can't understand class time column text")
+  if d < 1:
+    raise Exception("class time not specified")
   dd[1] = txt.count('يك شنبه')
   dd[2] = txt.count('دو شنبه')
   dd[3] = txt.count('سه شنبه')
@@ -32,15 +34,19 @@ def extract_weekdays(txt):
       return [i,i]
     elif dd[i] == 1:
       weekdays.append(i)
-  if len(weekdays) < 1 or len(weekdays) > 2:
-      raise Exception("bad weekdays")
   return weekdays
   
 def extract_week_times(txt, no):
+  SHANBE = 'شنبه'
   if no == 1:
-    cursor = txt.find('شنبه')
-  else:
-    cursor = txt.rfind('شنبه')
+    cursor = txt.find(SHANBE)
+  elif no == 2:
+    cursor_1 = txt.find(SHANBE)
+    cursor = txt[cursor_1+1:].find(SHANBE) + cursor_1
+  elif no == 3:
+    cursor_1 = txt.find(SHANBE)
+    cursor_2 = txt[cursor_1+1:].find(SHANBE) + cursor_1
+    cursor = txt[cursor_2+1:].find(SHANBE) + cursor_2
   first_zero = txt.find('0', cursor)
   first_one = txt.find('1', cursor)
   if first_one == -1:
@@ -129,28 +135,34 @@ def fetch_file(f, prefix = ""):
 
       days = extract_weekdays(schedule_time)
       day_1 = days[0]
+      day_2 = -1
+      day_3 = -1
       if len(days) > 1:
         day_2 = days[1]
-      else:
-        day_2 = -1
+      if len(days) > 2:
+        day_3 = days[2]
       start_1 = extract_week_times(schedule_time,1)[0]
       end_1 = extract_week_times(schedule_time,1)[1]
+      start_2 = -1
+      end_2 = -1
+      start_3 = -1
+      end_3 = -1
       if len(days) > 1:
         start_2 = extract_week_times(schedule_time,2)[0]
         end_2 = extract_week_times(schedule_time,2)[1]
-      else:
-        start_2 = -1
-        end_2 = -1
+      if len(days) > 2:
+        start_3 = extract_week_times(schedule_time,3)[0]
+        end_3 = extract_week_times(schedule_time,3)[1]
     except Exception as e:
       print("parse error at %d [%f, %f]"%(j,exam_day, exam_time))
       errors.append(('PE', id_raw, name_f, str(e)))
       continue
-    #print("INSERT INTO units(id,department,name,instructor,weekday_1,time_start_1,time_end_1,weekday_2,time_start_2,time_end_2,exam_day,exam_time,capacity,registered_count,weight,gender) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"% (id_f,dep_id,name_f,instructor_f,day_1,start_1,end_1,day_2,start_2,end_2,1,8.0,30,0,2,0))
     try:
-      mycursor.execute("REPLACE INTO units(id,department,name,instructor,weekday_1,time_start_1,time_end_1,weekday_2,time_start_2,time_end_2,exam_day,exam_time,capacity,registered_count,weight,gender,obsolete) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,0)", (id_f,dep_id,name_f,instructor_f,day_1,start_1,end_1,day_2,start_2,end_2,exam_day,exam_time,capacity,registered,weight,gender_f))
-    except:
+      mycursor.execute("REPLACE INTO units(id,department,name,instructor,weekday_1,time_start_1,time_end_1,weekday_2,time_start_2,time_end_2,weekday_3,time_start_3,time_end_3,exam_day,exam_time,capacity,registered_count,weight,gender,obsolete) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,0)", (id_f,dep_id,name_f,instructor_f,day_1,start_1,end_1,day_2,start_2,end_2,day_3,start_3,end_3,exam_day,exam_time,capacity,registered,weight,gender_f))
+    except Exception as e:
+      raise e
       print("insert error at %d"%(j))
-      errors.append(('DbE', id_raw, name_f, 'DB down'))
+      errors.append(('DbE', id_raw, name_f, str(e)))
   h = open("errors.txt", 'a')
   for er in errors:
       h.write("-- %s: %s (%s) | %s\n"%er)
