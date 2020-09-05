@@ -38,17 +38,10 @@ def extract_weekdays(txt):
   
 def extract_week_times(txt, no):
   SHANBE = 'شنبه'
-  if no == 1:
-    cursor = txt.find(SHANBE)
-  elif no == 2:
-    cursor_1 = txt.find(SHANBE)
-    cursor = txt[cursor_1+1:].find(SHANBE) + cursor_1
-  elif no == 3:
-    cursor_1 = txt.find(SHANBE)
-    cursor_2 = txt[cursor_1+1:].find(SHANBE) + cursor_1
-    cursor = txt[cursor_2+1:].find(SHANBE) + cursor_2
-  first_zero = txt.find('0', cursor)
-  first_one = txt.find('1', cursor)
+  txt = ' ' + txt
+  txt = txt.split(SHANBE)[no]
+  first_zero = txt.find('0')
+  first_one = txt.find('1')
   if first_one == -1:
     cursor = first_zero
   else:
