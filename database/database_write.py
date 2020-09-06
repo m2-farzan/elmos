@@ -15,11 +15,11 @@ def filter_farsi(txt):
   
 def extract_weekdays(txt):
   if txt == "":
-    raise Exception("class time not mentioned")
+    raise Exception("زمان کلاس در گلستان ذکر نشده است ⚪")
   dd = [0,0,0,0,0,0]
   d = txt.count('شنبه')
   if d > 3:
-    raise Exception("can't understand class time column text")
+    raise Exception("زمان کلاس در گلستان نامفهوم است 🔴")
   if d < 1:
     raise Exception("class time not specified")
   dd[1] = txt.count('يك شنبه')
@@ -158,7 +158,7 @@ def fetch_file(f, prefix = ""):
       errors.append(('DbE', id_raw, name_f, str(e)))
   h = open("errors.txt", 'a')
   for er in errors:
-      h.write("-- %s: %s (%s) | %s\n"%er)
+      h.write("-- %s: %s | %s ................ %s\n"%er)
 
 with open("errors.txt", 'w') as errors_file:
     errors_file.write('ق.اخذ: \n\n')
