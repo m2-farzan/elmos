@@ -107,6 +107,8 @@ def fetch_file(f, prefix = ""):
       
       id_f = id_raw[:7] + id_raw[8:10]
       name_f = prefix + filter_farsi(name)
+      if name_f[0:9] == 'آزمایشگاه':
+        name_f = name_f.replace('آزمایشگاه', 'آز')
       gender_f = 0
       if gender == 'مرد':
         gender_f = 1
