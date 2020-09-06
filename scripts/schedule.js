@@ -47,11 +47,19 @@ function get_item_rect(id, name, instructor, weekday_1, start_time_1, end_time_1
   var p1 = document.createElement("p");
   p1.setAttribute("class", "item-text item-name");
   var t1 = document.createTextNode(name);
+  if (name.length >= 20)
+  {
+    p1.setAttribute("style", "font-size: x-small");
+  }
   p1.appendChild(t1);
   
   var p2 = document.createElement("p");
   p2.setAttribute("class", "item-text item-instructor");
   var t2 = document.createTextNode(instructor);
+  if (name.length > 12 && instructor.length > 16)
+  {
+    p2.setAttribute("style", "font-size: xx-small");
+  }
   p2.appendChild(t2);
   
   div.appendChild(p1);
