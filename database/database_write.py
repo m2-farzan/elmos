@@ -128,7 +128,11 @@ def fetch_file(f, prefix = ""):
       if len(id_raw) > 7 and id_raw[0:7] == '1211320':
         instructor_f = "(" + "مخصوص " + filter_farsi( limit.split('،')[1][8+8:] ) + ") - " + instructor_f
 
-      days = extract_weekdays(schedule_time)
+      # ravesh tolid:
+      if id_raw == '1911395_01':
+        days = [2]
+      else:
+        days = extract_weekdays(schedule_time)
       day_1 = days[0]
       day_2 = -1
       day_3 = -1
