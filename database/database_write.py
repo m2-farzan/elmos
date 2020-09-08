@@ -122,7 +122,7 @@ def fetch_file(f, prefix = ""):
         instructor_f = instructor_f + " - " + desc
       
       if (dep_id == '28' and ('تخصصی' in name_f)):
-        instructor_f = instructor_f + " - " + limit[23:23+30]
+        instructor_f = instructor_f + " - " + filter_farsi( limit[25:limit.find('،', 25)] )
       
       # az mabani bargh
       if len(id_raw) > 7 and id_raw[0:7] == '1211320':
