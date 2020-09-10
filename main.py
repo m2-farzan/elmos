@@ -105,6 +105,8 @@ def schedule():
   if not session.get('logged_in', False):
     return render_template('log-in-dude.html')
   else:
+    if int(session['user_dep_id']) == 15:
+        flash(('yellow', 'فعلا نتونستیم درس نقشه کشی صنعتی رشته صنایع رو توی دیتابیس بیاریم. اطلاعات بیشتر در بخش نواقص دیتابیس موجود است.'))
     if int(session['user_dep_id']) == 18:
         flash(('red', 'متاسفانه بعضی از درس‌های معماری رو نتونستیم به درستی به دیتابیس منتقل کنیم. لطفا از پایین صفحه بخش نواقص دیتابیس را ببینید.'))
     return render_template('schedule.html', departments_list=departments_list(), user_department=current_user_department(), user_units=user_units(), departments_by_key=departments_by_key(), last_update=last_db_update)
