@@ -51,6 +51,23 @@
         </div>
     </header>
     
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        {% for color, message in messages %}
+          <p class="lead" style="border-color: {{ color }};
+            border-width: 1px;
+            border-style: solid;
+            border-radius: 6px;
+            padding: 3px 10px;
+            margin: 10px 0px;
+            font-size: 1rem;
+            background-color: #000b;">
+            {{ message }}
+            </p>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+    
     <main role="main" class="inner cover">
       <div class="row" style="margin:0px">
         <div class="schedule-table" id="schedule-table">
