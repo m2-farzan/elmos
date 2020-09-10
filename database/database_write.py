@@ -19,7 +19,7 @@ def extract_weekdays(txt):
   dd = [0,0,0,0,0,0]
   d = txt.count('شنبه')
   if d > 3:
-    raise Exception("زمان کلاس در گلستان نامفهوم است 🔴")
+    raise Exception("بیشتر از ۳ جلسه در هفته فعلا پشتیبانی نمیشه 🔴")
   if d < 1:
     raise Exception("class time not specified")
   dd[1] = txt.count('يك شنبه')
@@ -128,6 +128,28 @@ def fetch_file(f, prefix = ""):
       if len(id_raw) > 7 and id_raw[0:7] == '1211320':
         instructor_f = "(" + "مخصوص " + filter_farsi( limit.split('،')[1][8+8:] ) + ") - " + instructor_f
 
+      # nime-1 exactly repeated as nime-2:
+      if 'نيمه2' in schedule_time:
+        cursor = schedule_time.rfind('نيمه1')
+        comma = schedule_time.find('،', cursor)
+        n1 = schedule_time[0:comma]
+        n2 = schedule_time[comma+2:]
+        n2 = n2.replace('نيمه2', 'نيمه1')
+        n1.replace('حل تمرين', 'درس')
+        n2.replace('حل تمرين', 'درس')
+        n1.replace('ت', 'ع')
+        n2.replace('ت', 'ع')
+        if n1 == n2:
+          schedule_time = n1
+        elif n1 in n2:
+          schedule_time = n2
+        elif n2 in n1:
+          schedule_time = n1
+        else:
+          print(id_raw)
+          print (n1)
+          print(n2)
+      
       # ravesh tolid:
       if id_raw == '1911395_01':
         days = [2]
