@@ -2,6 +2,7 @@
 
 from flask import Flask, render_template, send_from_directory, request, session, redirect, url_for, flash
 from flask_mysqldb import MySQL
+from flask_caching import Cache
 from hashlib import md5
 
 app = Flask(__name__, static_url_path='')
@@ -12,7 +13,10 @@ app.config['MYSQL_USER'] = 'elmos_vahed'
 app.config['MYSQL_PASSWORD'] = 'CHANGE_ME'
 app.config['MYSQL_DB'] = 'elmos_units'
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
+app.config['CACHE_TYPE'] = 'simple'
+app.config['CACHE_DEFAULT_TIMEOUT'] = 50
 
+cache = Cache(app)
 mysql = MySQL(app)
 
 
@@ -103,17 +107,20 @@ def logout():
   session.clear();
   return redirect(url_for('home'))
 
+def last_db_update():
+  return open('database/last_db_update', 'r').readline()
+
 @app.route('/schedule')
 def schedule():
-  last_db_update = open('database/last_db_update', 'r').readline()
   if not session.get('logged_in', False):
     return render_template('log-in-dude.html')
   else:
     if int(session['user_dep_id']) == 18:
         flash(('red', 'متاسفانه بعضی از درس‌های معماری رو نتونستیم به درستی به دیتابیس منتقل کنیم. لطفا از پایین صفحه بخش نواقص دیتابیس را ببینید.'))
-    return render_template('schedule.html', departments_list=departments_list(), user_department=current_user_department(), user_units=user_units(), departments_by_key=departments_by_key(), last_update=last_db_update)
+    return render_template('schedule.html', departments_list=departments_list, user_department=current_user_department, user_units=user_units(), departments_by_key=departments_by_key, last_update=last_db_update())
 
-def parse_dep(dep, cur):
+def parse_dep(dep):
+  cur = mysql.connection.cursor()
   rr = {}
   rr['name'] = dep['name']
   rr['units'] = []
@@ -121,16 +128,16 @@ def parse_dep(dep, cur):
   units = cur.fetchall()
   for unit in units:
     rr['units'].append({'name':unit['name'], 'id':unit['id'], 'time_start_1':unit['time_start_1'], 'time_end_1':unit['time_end_1'], 'weekday_1':unit['weekday_1'], 'time_start_2':unit['time_start_2'], 'time_end_2':unit['time_end_2'], 'weekday_2':unit['weekday_2'], 'time_start_3':unit['time_start_3'], 'time_end_3':unit['time_end_3'], 'weekday_3':unit['weekday_3'], 'instructor':unit['instructor'], 'capacity':unit['capacity'], 'registered':unit['registered_count']})
+  cur.close()
   return rr
   
 def get_dep(dep_id):
   cur = mysql.connection.cursor()
   cur.execute("SELECT * FROM departments WHERE id = %s", [dep_id])
   dep = cur.fetchone()
-  r = parse_dep(dep, cur)
+  r = parse_dep(dep)
   cur.close()
   return r
-    
     
 def departments_list():
   cur = mysql.connection.cursor()
@@ -138,7 +145,7 @@ def departments_list():
   r = []
   deps = cur.fetchall()
   for dep in deps:
-    r.append( parse_dep(dep, cur) )
+    r.append(parse_dep(dep))
   cur.close()
   return r
   
