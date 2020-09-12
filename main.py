@@ -110,11 +110,26 @@ def logout():
 def last_db_update():
   return open('database/last_db_update', 'r').readline()
 
+def affected_by_gender_mismatch_bug():
+  cur = mysql.connection.cursor()
+  bugs = cur.execute("select picks_2.user_id, picks_2.unit_id, users.gender, units.gender, units.name from picks_2 join users on picks_2.user_id = users.id join units on picks_2.unit_id=units.id where units.gender!=users.gender and units.gender!=0 and picks_2.user_id=%s;", [session['user_id']])
+  if bugs == 0:
+    cur.close()
+    return []
+  errors = cur.fetchall()
+  r = []
+  for e in errors:
+    r.append(e['name'])
+  cur.close()
+  return r
+
 @app.route('/schedule')
 def schedule():
   if not session.get('logged_in', False):
     return render_template('log-in-dude.html')
   else:
+    if len(affected_by_gender_mismatch_bug()) > 0:
+      flash(('red', 'سلام. متاسفانه شما یکی از ۱۲ نفری هستین که سایت به اشتباه درس‌هایی که به جنسیتتون نمیخورد رو توی لیستتون آورد و شما اون درس‌ها رو به برنامتون اضافه کردین. این باگ الان برطرف شده ولی اون درس‌ها هنوز توی برنامه شما هستن و باید حذفشون کنین تا همه چیز ردیف بشه. این اتفاق نباید می‌افتاد و ما خیلی خیلی متاسفیم. \n درس‌های مشکل دار این‌ها هستن: ' + '، '.join(affected_by_gender_mismatch_bug())))
     if int(session['user_dep_id']) == 18:
         flash(('red', 'متاسفانه بعضی از درس‌های معماری رو نتونستیم به درستی به دیتابیس منتقل کنیم. لطفا از پایین صفحه بخش نواقص دیتابیس را ببینید.'))
     return render_template('schedule.html', departments_list=departments_list, user_department=current_user_department, user_units=user_units(), departments_by_key=departments_by_key, last_update=last_db_update())
