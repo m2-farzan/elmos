@@ -76,7 +76,7 @@
           
           <p>دانشکده شما:</p>
           
-          {% cache 50, session['user_dep_id'], last_update %}
+          {% cache 50, session['user_dep_id'], (session['gender']|string), last_update %}
           <div>
             <select class="selectpicker unit_select" multiple data-width="18em" data-live-search="true" data-selected-text-format="static" title="{{user_department().name}}">
             {% for unit in user_department().units %}
@@ -90,7 +90,7 @@
           </div>
           {% endcache %}
 
-          {% cache 50, last_update %}
+          {% cache 50, (session['gender']|string), last_update %}
           
           <p>دانشکده های عمومی:</p>
           
