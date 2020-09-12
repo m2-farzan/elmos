@@ -67,6 +67,72 @@ def simplify_dep_name(txt):
   txt = txt.replace('مهندسی ', '')
   return txt
 
+def limit_warning(id_raw, limit):
+  if limit == '':
+    return ''
+  r = []
+  deps = {
+    '12': 'برق',
+    '13': 'راه آهن',
+    '14': 'ریاضی',
+    '15': 'صنایع',
+    '16': 'فیزیک',
+    '17': 'مواد',
+    '18': 'معماری',
+    '19': 'مکانیک',
+    '20': 'مهندسی شیمی',
+    '21': 'عمران',
+    '22': 'کامپیوتر',
+    '26': 'تربیت بدنی',
+    '27': 'معارف',
+    '28': 'زبان',
+    '29': 'شیمی',
+    '30': 'خودرو',
+    '90': 'عمومی'
+  }
+  # Marks if:
+  # (a) Course is from dep x but is available for y
+  # (b) Course is from dep x and is available for x (only public courses)
+  # (c) any unavailable
+  # (d) 3991 stuff
+  publics = [
+    '1211320', # Az mabani bargh
+    '1411155', # Numerical Analysis
+    '1611202', # Physics 1
+    '2211277', # Mabani Comp
+    '1611123', # Az phys 1
+  ]
+  limit = filter_farsi(limit)
+  limit = limit.replace('غیرمجاز', '#نجاز')
+  limit = limit.replace('مجاز', '#مجاز')
+  limit = limit.replace('راه  آهن', 'راه آهن')
+  if ('مجاز' in limit) or ('نجاز' in limit):
+    first_flag = True
+    criteria = limit.split('#')
+    cur_dep = deps[id_raw[0:2]]
+    for criterion in criteria:
+      if 'مجاز' in criterion:
+        if ((id_raw[0:7] in publics) and (cur_dep in criterion)) or not (cur_dep in criterion):
+          for _, dep in deps.items():
+            if dep in criterion:
+              if first_flag:
+                r.append( 'مخصوص ' + simplify_dep_name(dep) )
+                first_flag = False
+              else:
+                r.append(simplify_dep_name(dep))
+      elif 'نجاز' in criterion:
+        for _, dep in deps.items():
+          if dep in criterion:
+            r.append( 'غ.مجاز برای  ' + simplify_dep_name(dep) )
+  if '3991 تا 3991' in limit:
+    r.append('مخصوص ورودی ۹۹')
+
+  if id_raw == '2811027_03':
+    r = [r[0]]
+
+  return '، '.join(r)
+
+
 mycursor = mydb.cursor()
 mycursor.execute("UPDATE units SET obsolete = 1")
 
@@ -124,44 +190,11 @@ def fetch_file(f, prefix = ""):
       
       if (dep_id == '90' and ('ورزش' in name)):
         instructor_f = instructor_f + " - " + desc
-      
-      if (dep_id == '28' and ('تخصصی' in name_f)):
-        instructor_f = instructor_f + " - " + filter_farsi( limit[25:limit.find('،', 25)] )
 
-      # az mabani bargh
-      if len(id_raw) > 7 and id_raw[0:7] == '1211320':
-        instructor_f = "(" + "مخصوص " + filter_farsi( limit.split('،')[1][8+8:] ) + ") - " + instructor_f
-
-      # numerical analysis
-      if len(id_raw) > 7 and id_raw[0:7] == '1411155':
-        try:
-          instructor_f = "(" + "مخصوص " + filter_farsi( limit.split('،')[1][8+8:] ) + ") - " + instructor_f
-        except:
-          pass
-
-      # physics 1
-      if len(id_raw) > 7 and id_raw[0:7] == '1611202':
-        try:
-          if 'ترم ورود از 3991 تا 3991،' in limit:
-            instructor_f = "(مخصوص ورودی ۹۹) - " + instructor_f
-          else:
-            instructor_f = "(" + "مخصوص " + filter_farsi( limit.split('،')[3] ) + ") - " + instructor_f
-        except:
-          pass
-
-      # mabani comp
-      if len(id_raw) > 7 and id_raw[0:7] == '2211277':
-        try:
-          dep = filter_farsi(limit).split('دانشکده')[1].split('،')[0]
-          instructor_f = "(" + "مخصوص " + simplify_dep_name(dep) + ") - " + instructor_f
-        except:
-          pass
-
-      # az phys 1
-      if len(id_raw) > 7 and id_raw[0:7] == '1611123':
-        if ('مجاز براي مقطع كارشناسي، دانشکده فيزيك،' in limit) and not \
-        ('غيرمجاز براي مقطع كارشناسي، دانشکده فيزيك،' in limit):
-          instructor_f = "(مخصوص فیزیک) - " + instructor_f
+      # general limit parser
+      warnings = limit_warning(id_raw, limit)
+      if len(warnings) > 0:
+        instructor_f = '(' + limit_warning(id_raw, limit) + ') - ' + instructor_f
 
       # nime-1 exactly repeated as nime-2:
       if 'نيمه2' in schedule_time:
@@ -216,9 +249,10 @@ def fetch_file(f, prefix = ""):
     try:
       mycursor.execute("REPLACE INTO units(id,department,name,instructor,weekday_1,time_start_1,time_end_1,weekday_2,time_start_2,time_end_2,weekday_3,time_start_3,time_end_3,exam_day,exam_time,capacity,registered_count,weight,gender,obsolete) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,0)", (id_f,dep_id,name_f,instructor_f,day_1,start_1,end_1,day_2,start_2,end_2,day_3,start_3,end_3,exam_day,exam_time,capacity,registered,weight,gender_f))
     except Exception as e:
-      raise e
+      # raise e
       print("insert error at %d"%(j))
       errors.append(('DbE', id_raw, name_f, str(e)))
+      print(instructor_f)
   h = open("errors.txt", 'a')
   for er in errors:
       h.write("-- %s: %s | %s ................ %s\n"%er)
