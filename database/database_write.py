@@ -61,7 +61,11 @@ def get_exam_datetime(txt):
   first_colon = txt.find('-') - 3
   time = int(txt[(first_colon-2):first_colon]) + int(txt[(first_colon+1):(first_colon+3)]) / 60.0
   return date, time
-  
+
+def simplify_dep_name(txt):
+  txt = txt.replace('مهندسی شیمی', 'م. شیمی')
+  txt = txt.replace('مهندسی ', '')
+  return txt
 
 mycursor = mydb.cursor()
 mycursor.execute("UPDATE units SET obsolete = 1")
@@ -123,10 +127,41 @@ def fetch_file(f, prefix = ""):
       
       if (dep_id == '28' and ('تخصصی' in name_f)):
         instructor_f = instructor_f + " - " + filter_farsi( limit[25:limit.find('،', 25)] )
-      
+
       # az mabani bargh
       if len(id_raw) > 7 and id_raw[0:7] == '1211320':
         instructor_f = "(" + "مخصوص " + filter_farsi( limit.split('،')[1][8+8:] ) + ") - " + instructor_f
+
+      # numerical analysis
+      if len(id_raw) > 7 and id_raw[0:7] == '1411155':
+        try:
+          instructor_f = "(" + "مخصوص " + filter_farsi( limit.split('،')[1][8+8:] ) + ") - " + instructor_f
+        except:
+          pass
+
+      # physics 1
+      if len(id_raw) > 7 and id_raw[0:7] == '1611202':
+        try:
+          if 'ترم ورود از 3991 تا 3991،' in limit:
+            instructor_f = "(مخصوص ورودی ۹۹) - " + instructor_f
+          else:
+            instructor_f = "(" + "مخصوص " + filter_farsi( limit.split('،')[3] ) + ") - " + instructor_f
+        except:
+          pass
+
+      # mabani comp
+      if len(id_raw) > 7 and id_raw[0:7] == '2211277':
+        try:
+          dep = filter_farsi(limit).split('دانشکده')[1].split('،')[0]
+          instructor_f = "(" + "مخصوص " + simplify_dep_name(dep) + ") - " + instructor_f
+        except:
+          pass
+
+      # az phys 1
+      if len(id_raw) > 7 and id_raw[0:7] == '1611123':
+        if ('مجاز براي مقطع كارشناسي، دانشکده فيزيك،' in limit) and not \
+        ('غيرمجاز براي مقطع كارشناسي، دانشکده فيزيك،' in limit):
+          instructor_f = "(مخصوص فیزیک) - " + instructor_f
 
       # nime-1 exactly repeated as nime-2:
       if 'نيمه2' in schedule_time:
