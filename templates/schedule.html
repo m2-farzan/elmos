@@ -43,6 +43,9 @@
             <small id="connecting" class="sync invisible">در حال همگام سازی...</small>
           </h3>
           <nav class="nav nav-masthead justify-content-center">
+            {% if is_supporter and support_prompt %}
+            <a class="nav-link" href="https://www.payping.ir/d/rhZC" style="color: greenyellow;">پشتیبانی مالی</a>
+            {% endif %}
             <a class="nav-link active" href="/schedule">برنامه هفتگی</a>
             <a class="nav-link" href="/exams">برنامه امتحانات</a>
             <a class="nav-link" href="/summary">خلاصه وضعیت</a>
@@ -67,6 +70,34 @@
         {% endfor %}
       {% endif %}
     {% endwith %}
+
+    {% if (not is_supporter) and support_prompt %}
+    <span class="lead" style="border-color: white;
+            border-width: 1px;
+            border-style: solid;
+            border-radius: 6px;
+            padding: 10px 10px;
+            margin: 10px 30px;
+            font-size: 1rem;
+            font-weight: 500;
+            background-color: #090f;
+            width: 57em;">
+      <a>
+سایت رو دوست داشتین؟ در پرداخت اجاره سرور مشارکت کنید تا بتونیم برای ترم‌های بعد هم اینجا رو داشته باشیم.
+      </a>
+      <a href="https://www.payping.ir/d/rhZC" style="
+        border-radius: 6px;
+        padding: 3px 10px;
+        margin: 0px 10px;
+        font-size: 1rem;
+        font-weight: 800;
+        color: #090b;
+        background-color: #fff;
+        width: 65em;
+        text-shadow: none;
+      ">پشتیبانی مالی 💙</a>
+    </span>
+    {% endif %}
     
     <main role="main" class="inner cover">
       <div class="row" style="margin:0px">
@@ -194,11 +225,10 @@
     <footer class="mastfoot mt-auto">
       <div class="inner">
         <p>
-آخرین به روز رسانی دیتابیس: {{last_update}}
-        </p>
-        <p><a href="/database_notes" style="color: rgba(255, 255, 255, .5);">
+آخرین به روز رسانی دیتابیس: {{last_update}} <a href="/database_notes" style="color: rgba(255, 255, 255, .5);">
           [فهرست نواقص دیتابیس]
-        </a></p>
+        </a>
+        </p>
         <p>
   این سایت شخصی و غیر رسمیه و با دانشگاه علم و صنعت در ارتباط نیست. ایمیل من: elmos.vahed@gmail.com
         </p>
