@@ -2,6 +2,7 @@
 import string
 import mysql.connector
 from py_modules.persian_datetime import now_to_str
+import re
 
 mydb = mysql.connector.connect(
   host="localhost",
@@ -16,40 +17,22 @@ def filter_farsi(txt):
 def extract_weekdays(txt):
   if txt == "":
     raise Exception("زمان کلاس در گلستان ذکر نشده است ⚪")
-  dd = [0,0,0,0,0,0]
   d = txt.count('شنبه')
   if d > 3:
     raise Exception("بیشتر از ۳ جلسه در هفته فعلا پشتیبانی نمیشه 🔴")
   if d < 1:
     raise Exception("class time not specified")
-  dd[1] = txt.count('يك شنبه')
-  dd[2] = txt.count('دو شنبه')
-  dd[3] = txt.count('سه شنبه')
-  dd[4] = txt.count('چهار شنبه')
-  dd[5] = txt.count('پنج شنبه')
-  dd[0] = d - (dd[1] + dd[2] + dd[3] + dd[4] + dd[5])
-  weekdays = []
-  for i in range(0, 6):
-    if dd[i] == 3:
-      return [i,i,i]
-    if dd[i] == 2:
-      weekdays.append(i)
-      weekdays.append(i)
-    elif dd[i] == 1:
-      weekdays.append(i)
-  return weekdays
+  times = re.findall(r"(شنبه)|(يك شنبه)|(دو شنبه)|(سه شنبه)|(چهار شنبه)|(پنج شنبه)", txt)
+  def get_day(tup):
+    for i in range(0, len(tup)):
+      if tup[i] != '':
+        return i
+  days = [get_day(t) for t in times]
+  return days
   
 def extract_week_times(txt, no):
-  SHANBE = 'شنبه'
-  txt = ' ' + txt
-  txt = txt.split(SHANBE)[no]
-  first_zero = txt.find('0')
-  first_one = txt.find('1')
-  if first_one == -1:
-    cursor = first_zero
-  else:
-    cursor = min(first_zero, first_one)
-  time_text = txt[cursor:(cursor+11)]
+  times = re.findall(r"[0-9]{2}:[0-9]{2}-[0-9]{2}:[0-9]{2}", txt)
+  time_text = times[no - 1]
   start = int(time_text[0:2]) + int(time_text[3:5])/60.0
   end = int(time_text[6:8]) + int(time_text[9:11])/60.0
   return (start, end)
@@ -246,6 +229,7 @@ def fetch_file(f, prefix = ""):
         start_3 = extract_week_times(schedule_time,3)[0]
         end_3 = extract_week_times(schedule_time,3)[1]
     except Exception as e:
+      # raise e
       print("parse error at %d [%f, %f]"%(j,exam_day, exam_time))
       errors.append(('PE', id_raw, name_f, str(e)))
       continue
