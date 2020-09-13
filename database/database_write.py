@@ -30,8 +30,11 @@ def extract_weekdays(txt):
   dd[0] = d - (dd[1] + dd[2] + dd[3] + dd[4] + dd[5])
   weekdays = []
   for i in range(0, 6):
+    if dd[i] == 3:
+      return [i,i,i]
     if dd[i] == 2:
-      return [i,i]
+      weekdays.append(i)
+      weekdays.append(i)
     elif dd[i] == 1:
       weekdays.append(i)
   return weekdays
