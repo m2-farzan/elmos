@@ -157,7 +157,7 @@ def schedule():
     if len(affected_by_gender_mismatch_bug()) > 0:
       flash(('red', 'سلام. متاسفانه شما یکی از ۱۲ نفری هستین که سایت به اشتباه درس‌هایی که به جنسیتتون نمیخورد رو توی لیستتون آورد و شما اون درس‌ها رو به برنامتون اضافه کردین. این باگ الان برطرف شده ولی اون درس‌ها هنوز توی برنامه شما هستن و باید حذفشون کنین تا همه چیز ردیف بشه. این اتفاق نباید می‌افتاد و ما خیلی خیلی متاسفیم. \n درس‌های مشکل دار این‌ها هستن: ' + '، '.join(affected_by_gender_mismatch_bug())))
     if int(session['user_dep_id']) == 18:
-        flash(('red', 'متاسفانه بعضی از درس‌های معماری رو نتونستیم به درستی به دیتابیس منتقل کنیم. لطفا از پایین صفحه بخش نواقص دیتابیس را ببینید.'))
+        flash(('yellow', 'متاسفانه بعضی از درس‌ها رو نتونستیم به درستی به دیتابیس منتقل کنیم. لطفا از پایین صفحه بخش نواقص دیتابیس را ببینید.'))
     return render_template('schedule.html', departments_list=departments_list, user_department=current_user_department, user_units=user_units(), departments_by_key=departments_by_key, last_update=last_db_update(), is_supporter=is_supporter(), support_prompt=SUPPORT_PROMPT)
 
 def parse_dep(dep):
