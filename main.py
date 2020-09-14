@@ -311,7 +311,7 @@ def user_summary():
 
 @app.route('/database_notes')
 def database_notes():
-  content = open(RP + 'database/errors.txt', 'r').readlines()
+  content = open(RP + 'database/errors.txt', 'r', encoding="utf-8").readlines()
   return render_template('database_notes.html', content=content)
 
 @app.route('/captcha/img', methods=['GET', 'POST'])
