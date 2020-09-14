@@ -218,12 +218,43 @@
           </select>
           </div>
           {% endcache %}
-          
       </div>
     </main>
     
     <footer class="mastfoot mt-auto">
       <div class="inner">
+        {% if captcha_required %}
+        <div style="border-radius: 0.5em;
+        border-width: 1px;
+        border-style: solid;
+        border-color: white;
+        width: 35em;
+        padding: 0.5em;">
+        <p style="color: wheat;">هی، میتونی کمکم کنی وارد گلستان بشم و دیتابیس رو آپدیت کنم؟ 🤖🤖</p>
+        <p style="color: wheat;">فقط بهم بگو اینجا چی نوشته:</p>
+        <div style="text-align: center;
+          display: inline-flex;
+          margin-bottom: 0.5em;">
+          <img src="/captcha/img?{{range(1,1000000000)|random}}" style="border-radius: 0.5em;">
+          <label for="inputCaptcha" class="sr-only">Captcha</label>
+          <input name="captcha" type="text" id="inputCaptcha" class="form-control" placeholder="حروف عکس" required style="margin-top: 0.6em;" autocomplete="off">
+          <a style="border-radius: 6px;
+          padding: 3px 10px;
+          margin: 0px 5px;
+          font-size: 1rem;
+          font-weight: 800;
+          color: rgb(202, 184, 84);
+          background-color: #333;
+          border-color: rgb(202, 184, 84);
+          border-style: solid;
+          border-width: 2px;
+          width: 10em;
+          height: 2.4em;
+          text-shadow: none;
+          margin-top: 0.6em;" href="" onclick="push_captcha();">برو</a>
+        </div>
+      </div>
+        {% endif %}
         <p>
 آخرین به روز رسانی دیتابیس: {{last_update}} <a href="/database_notes" style="color: rgba(255, 255, 255, .5);">
           [فهرست نواقص دیتابیس]
@@ -250,6 +281,13 @@
     {% for unit in user_units %}
     disp_item({{unit.id}}, '{{unit.name}}', '{{unit.instructor}}', {{unit.weekday_1}}, {{unit.time_start_1}}, {{unit.time_end_1}}, {{unit.weekday_2}}, {{unit.time_start_2}}, {{unit.time_end_2}}, {{unit.weekday_3}}, {{unit.time_start_3}}, {{unit.time_end_3}}, {{unit.registered}}, {{unit.capacity}}, false);
     {% endfor %}
+    </script>
+    <script>
+      var push_captcha = function() {
+        var xhttp = new XMLHttpRequest();
+        xhttp.open("POST", '/captcha/code/' + $("#inputCaptcha").val(), true);
+        xhttp.send();
+      }
     </script>
   </body>
 </html>

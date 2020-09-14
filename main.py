@@ -4,6 +4,7 @@ from flask import Flask, render_template, send_from_directory, request, session,
 from flask_mysqldb import MySQL
 from flask_caching import Cache
 from hashlib import md5
+from random import randint
 
 app = Flask(__name__, static_url_path='')
 app.secret_key = 'CHANGE_ME_2'
@@ -16,7 +17,11 @@ app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 app.config['CACHE_TYPE'] = 'simple'
 app.config['CACHE_DEFAULT_TIMEOUT'] = 50
 
+RP = '' # root path
 SUPPORT_PROMPT = False
+CAPTCHA_LOGIN_PROMPT = True
+CAPTCHA_MAINPAGE_PROMPT = True
+CAPTCHA_MAINPAGE_RAND_COEFF = 3
 
 cache = Cache(app)
 mysql = MySQL(app)
@@ -108,8 +113,8 @@ def login():
       captcha_code_set(request.form['captcha'])
     return login_as(email, password)
   else:
-    with open('captcha/captcha.txt') as f:
-      captcha_required = f.readline() == 'waiting'
+    with open(RP + 'captcha/captcha.txt') as f:
+      captcha_required = (f.readline() == 'waiting') and CAPTCHA_LOGIN_PROMPT
     return render_template('login.html', captcha_required=captcha_required)
 
 def login_as(email, password):
@@ -138,7 +143,7 @@ def logout():
   return redirect(url_for('home'))
 
 def last_db_update():
-  return open('database/last_db_update', 'r').readline()
+  return open(RP + 'database/last_db_update', 'r').readline()
 
 def affected_by_gender_mismatch_bug():
   cur = mysql.connection.cursor()
@@ -155,6 +160,8 @@ def affected_by_gender_mismatch_bug():
 
 @app.route('/schedule')
 def schedule():
+  with open(RP + 'captcha/captcha.txt') as f:
+    captcha_required = (f.readline() == 'waiting') and CAPTCHA_MAINPAGE_PROMPT and (randint(0, CAPTCHA_MAINPAGE_RAND_COEFF) == 0)
   if not session.get('logged_in', False):
     return render_template('log-in-dude.html')
   else:
@@ -162,7 +169,7 @@ def schedule():
       flash(('red', 'سلام. متاسفانه شما یکی از ۱۲ نفری هستین که سایت به اشتباه درس‌هایی که به جنسیتتون نمیخورد رو توی لیستتون آورد و شما اون درس‌ها رو به برنامتون اضافه کردین. این باگ الان برطرف شده ولی اون درس‌ها هنوز توی برنامه شما هستن و باید حذفشون کنین تا همه چیز ردیف بشه. این اتفاق نباید می‌افتاد و ما خیلی خیلی متاسفیم. \n درس‌های مشکل دار این‌ها هستن: ' + '، '.join(affected_by_gender_mismatch_bug())))
     if int(session['user_dep_id']) == 18:
         flash(('yellow', 'متاسفانه بعضی از درس‌ها رو نتونستیم به درستی به دیتابیس منتقل کنیم. لطفا از پایین صفحه بخش نواقص دیتابیس را ببینید.'))
-    return render_template('schedule.html', departments_list=departments_list, user_department=current_user_department, user_units=user_units(), departments_by_key=departments_by_key, last_update=last_db_update(), is_supporter=is_supporter(), support_prompt=SUPPORT_PROMPT)
+    return render_template('schedule.html', departments_list=departments_list, user_department=current_user_department, user_units=user_units(), departments_by_key=departments_by_key, last_update=last_db_update(), is_supporter=is_supporter(), support_prompt=SUPPORT_PROMPT, captcha_required=captcha_required)
 
 def parse_dep(dep):
   cur = mysql.connection.cursor()
@@ -304,7 +311,7 @@ def user_summary():
 
 @app.route('/database_notes')
 def database_notes():
-  content = open('database/errors.txt', 'r').readlines()
+  content = open(RP + 'database/errors.txt', 'r').readlines()
   return render_template('database_notes.html', content=content)
 
 @app.route('/captcha/img', methods=['GET', 'POST'])
@@ -313,8 +320,8 @@ def captcha_img():
     if 'file' not in request.files:
       abort(400)
     img = request.files['file']
-    img.save('captcha/captcha.png')
-    with open('captcha/captcha.txt', 'w') as value_file:
+    img.save(RP + 'captcha/captcha.png')
+    with open(RP + 'captcha/captcha.txt', 'w') as value_file:
       value_file.write('waiting')
     return {}
 
@@ -323,17 +330,24 @@ def captcha_img():
 
 @app.route('/captcha/code/<code>', methods=['POST'])
 def captcha_code_set(code):
-  with open('captcha/captcha.txt', 'w') as value_file:
+  if len(code) < 4:
+    abort(400)
+  cur_code = 'null'
+  with open(RP + 'captcha/captcha.txt', 'r') as value_file:
+    cur_code = value_file.readline()
+  if cur_code != 'waiting':
+    abort(400)
+  with open(RP + 'captcha/captcha.txt', 'w') as value_file:
     value_file.write(code)
     return {}
 
 @app.route('/captcha/code', methods=['GET'])
 def captcha_code_get():
   code = 'null'
-  with open('captcha/captcha.txt', 'r') as value_file:
+  with open(RP + 'captcha/captcha.txt', 'r') as value_file:
     code = value_file.readline()
   if (code != 'waiting') and (code != 'stale'):
-    with open('captcha/captcha.txt', 'w') as value_file:
+    with open(RP + 'captcha/captcha.txt', 'w') as value_file:
       value_file.write('stale')
   return {'code': code}
 
