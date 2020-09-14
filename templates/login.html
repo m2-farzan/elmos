@@ -12,6 +12,13 @@
       <input name="email" type="email" id="inputEmail" class="form-control" placeholder="ایمیل" required autofocus>
       <label for="inputPassword" class="sr-only">Password</label>
       <input name="password" type="password" id="inputPassword" class="form-control" placeholder="رمز" required>
+      {% if captcha_required %}
+      <div style="text-align: center; display: inline-flex;">
+        <img src="/captcha/img?{{range(1,1000000000)|random}}" style="border-radius: 0.5em;">
+        <label for="inputCaptcha" class="sr-only">Captcha</label>
+        <input name="captcha" type="text" id="inputCaptcha" class="form-control" placeholder="حروف عکس" required style="margin-top: 0.6em;" autocomplete="off">
+      </div>
+      {% endif %}
       <button class="btn btn-lg btn-primary btn-block" type="submit">ورود</button>
     </form>
   </main>

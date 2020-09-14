@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 
-from flask import Flask, render_template, send_from_directory, request, session, redirect, url_for, flash
+from flask import Flask, render_template, send_from_directory, request, session, redirect, url_for, flash, abort
 from flask_mysqldb import MySQL
 from flask_caching import Cache
 from hashlib import md5
@@ -104,9 +104,13 @@ def login():
   if request.method == 'POST':
     email = request.form['email']
     password = request.form['password']
+    if 'captcha' in request.form:
+      captcha_code_set(request.form['captcha'])
     return login_as(email, password)
   else:
-    return render_template('login.html')
+    with open('captcha/captcha.txt') as f:
+      captcha_required = f.readline() == 'waiting'
+    return render_template('login.html', captcha_required=captcha_required)
 
 def login_as(email, password):
   cur = mysql.connection.cursor()
@@ -302,6 +306,37 @@ def user_summary():
 def database_notes():
   content = open('database/errors.txt', 'r').readlines()
   return render_template('database_notes.html', content=content)
+
+@app.route('/captcha/img', methods=['GET', 'POST'])
+def captcha_img():
+  if request.method == 'POST':
+    if 'file' not in request.files:
+      abort(400)
+    img = request.files['file']
+    img.save('captcha/captcha.png')
+    with open('captcha/captcha.txt', 'w') as value_file:
+      value_file.write('waiting')
+    return {}
+
+  elif request.method == 'GET':
+    return send_from_directory('captcha', 'captcha.png')
+
+@app.route('/captcha/code/<code>', methods=['POST'])
+def captcha_code_set(code):
+  with open('captcha/captcha.txt', 'w') as value_file:
+    value_file.write(code)
+    return {}
+
+@app.route('/captcha/code', methods=['GET'])
+def captcha_code_get():
+  code = 'null'
+  with open('captcha/captcha.txt', 'r') as value_file:
+    code = value_file.readline()
+  if (code != 'waiting') and (code != 'stale'):
+    with open('captcha/captcha.txt', 'w') as value_file:
+      value_file.write('stale')
+  return {'code': code}
+
 
 if __name__ == '__main__':
   app.run(host="0.0.0.0", port=90, debug=True)
