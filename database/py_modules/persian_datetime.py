@@ -35,7 +35,7 @@ def gregorian_to_jalali(gy,gm,gd):
  return jy,jm,jd
 
 def now_to_str():
-  tz_ = timezone( timedelta( minutes=270 ) )
+  tz_ = timezone( timedelta( minutes=210 ) )
   now = datetime.now(tz=tz_)
   y,m,d = gregorian_to_jalali(now.year, now.month, now.day)
   hh = str(now.hour).zfill(2)
