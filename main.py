@@ -9,7 +9,7 @@ from random import randint
 app = Flask(__name__, static_url_path='')
 app.secret_key = 'CHANGE_ME_2'
 
-app.config['MYSQL_HOST'] = '127.0.0.1'
+app.config['MYSQL_HOST'] = 'db'
 app.config['MYSQL_USER'] = 'elmos_vahed'
 app.config['MYSQL_PASSWORD'] = 'CHANGE_ME'
 app.config['MYSQL_DB'] = 'elmos_units'
@@ -17,7 +17,7 @@ app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 app.config['CACHE_TYPE'] = 'simple'
 app.config['CACHE_DEFAULT_TIMEOUT'] = 50
 
-RP = '' # root path
+RP = '/var/www/elmos/' # root path
 SUPPORT_PROMPT = False
 CAPTCHA_LOGIN_PROMPT = True
 CAPTCHA_MAINPAGE_PROMPT = True

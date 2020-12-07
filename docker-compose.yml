@@ -1,0 +1,22 @@
+version: '3.7'
+
+services:
+        elmos:
+                image: elmos:latest
+                container_name: elmos-app
+                restart: always
+                ports:
+                        - 4018:80
+                volumes:
+                        - .:/var/www/elmos
+        db:
+                image: mariadb
+                container_name: elmos-db
+                restart: always
+                environment:
+                        MYSQL_ROOT_PASSWORD: CHANGE_ME
+                        MYSQL_USER: elmos_vahed
+                        MYSQL_PASSWORD: CHANGE_ME
+                        MYSQL_DATABASE: elmos_units
+                volumes:
+                        - /services/ir.elmos-vahed/data:/var/lib/mysql
