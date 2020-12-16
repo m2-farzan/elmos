@@ -1,5 +1,8 @@
 version: '3.7'
 
+volumes:
+        elmos-database:
+
 services:
         elmos:
                 image: elmos:latest
@@ -19,4 +22,4 @@ services:
                         MYSQL_PASSWORD: CHANGE_ME
                         MYSQL_DATABASE: elmos_units
                 volumes:
-                        - /services/ir.elmos-vahed/data:/var/lib/mysql
+                        - elmos-database:/var/lib/mysql
