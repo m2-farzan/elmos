@@ -4,15 +4,16 @@ from flask import Flask, render_template, send_from_directory, request, session,
 from flask_mysqldb import MySQL
 from flask_caching import Cache
 from hashlib import md5
+from os import environ
 from random import randint
 
 app = Flask(__name__, static_url_path='')
 app.secret_key = 'CHANGE_ME_2'
 
 app.config['MYSQL_HOST'] = 'db'
-app.config['MYSQL_USER'] = 'elmos_vahed'
-app.config['MYSQL_PASSWORD'] = 'CHANGE_ME'
-app.config['MYSQL_DB'] = 'elmos_units'
+app.config['MYSQL_USER'] = environ['DB_USER']
+app.config['MYSQL_PASSWORD'] = environ['DB_PASS']
+app.config['MYSQL_DB'] = environ['DB_DATABASE']
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 app.config['CACHE_TYPE'] = 'simple'
 app.config['CACHE_DEFAULT_TIMEOUT'] = 50

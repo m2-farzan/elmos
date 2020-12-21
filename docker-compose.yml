@@ -11,8 +11,12 @@ services:
                         dockerfile: ./Dockerfile
                 container_name: elmos-app
                 restart: always
+                environment:
+                        DB_USER: ${DB_USER}
+                        DB_PASS: ${DB_PASS}
+                        DB_DATABASE: ${DB_DATABASE}
                 ports:
-                        - 4018:80
+                        - ${UI_PORT}:80
                 volumes:
                         - .:/var/www/elmos
         db:
@@ -20,9 +24,9 @@ services:
                 container_name: elmos-db
                 restart: always
                 environment:
-                        MYSQL_ROOT_PASSWORD: CHANGE_ME
-                        MYSQL_USER: elmos_vahed
-                        MYSQL_PASSWORD: CHANGE_ME
-                        MYSQL_DATABASE: elmos_units
+                        MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASS}
+                        MYSQL_USER: ${DB_USER}
+                        MYSQL_PASSWORD: ${DB_PASS}
+                        MYSQL_DATABASE: ${DB_DATABASE}
                 volumes:
                         - elmos-database:/var/lib/mysql
