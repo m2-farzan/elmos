@@ -2,8 +2,6 @@
 
 ## Critical
 
-- [ ] Check recent DB changes for exams
-
 ## Medium Priority
 
 - [ ] Live updater
@@ -12,12 +10,13 @@
 - [ ] Address DNS DoS
 - [ ] Set request limit per user
 - [ ] Add captcha to login & signup
-- [ ] Move to nginx or remove web server altogether
+- [x] Move to nginx or remove web server altogether
 - [ ] Check hot reloading
 
 ## Extra
 
-- [ ] Dockerize DB Updater
+- [x] Dockerize DB Updater [dbwriter]
+- [ ] Dockerize Golestan crawler [golestanspider]
 - [ ] Make the code open-source & promote on website
 - [ ] Support bitcoin donations
 - [ ] Support multiple plans
