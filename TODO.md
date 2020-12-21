@@ -12,6 +12,8 @@
 - [ ] Address DNS DoS
 - [ ] Set request limit per user
 - [ ] Add captcha to login & signup
+- [ ] Move to nginx or remove web server altogether
+- [ ] Check hot reloading
 
 ## Extra
 
