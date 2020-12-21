@@ -314,7 +314,7 @@ def user_summary():
 
 @app.route('/database_notes')
 def database_notes():
-  content = redis.get('database_errors') or ['Not Available']
+  content = redis.get('database_errors').split('\n') or ['Not Available']
   return render_template('database_notes.html', content=content)
 
 @app.route('/captcha/img', methods=['GET', 'POST'])
