@@ -1,6 +1,4 @@
-database/data_avail.txt
-database/data_na.txt
-database/last_db_update
-database/errors.txt
+data_avail.txt
+data_na.txt
 __pycache__/
 captcha/

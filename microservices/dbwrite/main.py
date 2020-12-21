@@ -2,14 +2,38 @@
 import string
 import mysql.connector
 from py_modules.persian_datetime import now_to_str
+from flask import Flask, request
+from os import environ, uname
 import re
+from redis import Redis
+
+duty = 1500
+DATA_AVAIL_PATH = "data_avail.txt"
+DATA_NA_PATH = "data_na.txt"
 
 mydb = mysql.connector.connect(
-  host="localhost",
-  user="elmos_vahed",
-  passwd="CHANGE_ME",
-  database="elmos_units"
+  host="db",
+  user=environ['DB_USER'],
+  passwd=environ['DB_PASS'],
+  database=environ['DB_DATABASE']
 )
+
+redis = Redis('redis', db=0)
+
+app = Flask(__name__)
+
+@app.route('/', methods=['GET', 'POST'])
+def http_entry():
+    if request.method == 'GET':
+        return 'Service Up. Hostname is: ' + uname()[1]
+    request.files['data_avail'].save(DATA_AVAIL_PATH)
+    request.files['data_na'].save(DATA_NA_PATH)
+    main()
+    return 'Files received.'
+    
+
+# --------------------- Only functions.
+
 
 def filter_farsi(txt):
   return txt.replace( 'ي', 'ی').replace('ك', 'ک').replace('<br>','،')
@@ -119,15 +143,11 @@ def limit_warning(id_raw, limit):
   return '، '.join(r)
 
 
-mycursor = mydb.cursor()
-mycursor.execute("UPDATE units SET obsolete = 1")
-
-duty = 1500
-
 def fetch_data(f):
   return (f.readline())[4:-6]
 
-def fetch_file(f, prefix = ""):
+
+def fetch_file(f, mycursor, prefix = ""):
   # drop first 31 lines
   for i in range(0, 31):
     f.readline()
@@ -240,23 +260,28 @@ def fetch_file(f, prefix = ""):
       print("insert error at %d"%(j))
       errors.append(('DbE', id_raw, name_f, str(e)))
       print(instructor_f)
-  h = open("errors.txt", 'a')
   for er in errors:
-      h.write("-- %s: %s | %s ................ %s\n"%er)
+      redis.append("database_errors", "-- %s: %s | %s ................ %s\n"%er)
 
-with open("errors.txt", 'w') as errors_file:
-    errors_file.write('ق.اخذ: \n\n')
-f = open("data_avail.txt")
-fetch_file(f)
-with open("errors.txt", 'a') as errors_file:
-    errors_file.write('\n\nغ.ق.اخذ: \n\n')
-g = open("data_na.txt")
-fetch_file(g, "غ.ق.اخذ ")
+def main():
+    mycursor = mydb.cursor()
+    mycursor.execute("UPDATE units SET obsolete = 1")
 
-try:
-  mydb.commit()
-  t = open("last_db_update", 'w')
-  t.write(now_to_str())
-# os.putenv('ELMOS_DB_LAST_UPDATE', now_to_str())
-except:
-  print("commit error at the end")
+    redis.set("database_errors", '')
+    redis.append("database_errors", 'ق.اخذ: \n\n')
+    f = open(DATA_AVAIL_PATH)
+    fetch_file(f, mycursor)
+    
+    redis.append("database_errors", '\n\nغ.ق.اخذ: \n\n')
+    g = open(DATA_NA_PATH)
+    fetch_file(g, "غ.ق.اخذ ")
+
+    try:
+      mydb.commit()
+      redis.set("last_db_update", now_to_str())
+    except:
+      print("commit error at the end")
+
+# main()
+if __name__ == '__main__':
+	app.run(debug=True, port=91)

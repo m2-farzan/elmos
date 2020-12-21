@@ -37,3 +37,17 @@ services:
                 restart: always
                 volumes:
                         - elmos-redis:/data
+        dbwriter:
+                image: elmosdbwriter:latest
+                build:
+                        context: ./microservices/dbwriter/
+                        dockerfile: ./microservices/dbwriter/
+                container_name: elmos-dbwriter
+                restart: always
+                environment:
+                        DB_USER: ${DB_USER}
+                        DB_PASS: ${DB_PASS}
+                        DB_DATABASE: ${DB_DATABASE}
+                ports:
+                        - ${DBWRITER_PORT}:91
+
