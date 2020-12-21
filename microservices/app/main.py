@@ -19,7 +19,6 @@ app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 app.config['CACHE_TYPE'] = 'simple'
 app.config['CACHE_DEFAULT_TIMEOUT'] = 50
 
-RP = '/var/www/elmos/' # root path
 SUPPORT_PROMPT = False
 CAPTCHA_LOGIN_PROMPT = True
 CAPTCHA_MAINPAGE_PROMPT = True
@@ -116,8 +115,7 @@ def login():
       captcha_code_set(request.form['captcha'])
     return login_as(email, password)
   else:
-    with open(RP + 'captcha/captcha.txt') as f:
-      captcha_required = (f.readline() == 'waiting') and CAPTCHA_LOGIN_PROMPT
+    captcha_required = (redis.get('captcha') == 'waiting') and CAPTCHA_LOGIN_PROMPT
     return render_template('login.html', captcha_required=captcha_required)
 
 def login_as(email, password):
@@ -163,8 +161,7 @@ def affected_by_gender_mismatch_bug():
 
 @app.route('/schedule')
 def schedule():
-  with open(RP + 'captcha/captcha.txt') as f:
-    captcha_required = (f.readline() == 'waiting') and CAPTCHA_MAINPAGE_PROMPT and (randint(0, CAPTCHA_MAINPAGE_RAND_COEFF) == 0)
+  captcha_required = (redis.get('captcha') == 'waiting') and CAPTCHA_MAINPAGE_PROMPT and (randint(0, CAPTCHA_MAINPAGE_RAND_COEFF) == 0)
   if not session.get('logged_in', False):
     return render_template('log-in-dude.html')
   else:
@@ -323,9 +320,8 @@ def captcha_img():
     if 'file' not in request.files:
       abort(400)
     img = request.files['file']
-    img.save(RP + 'captcha/captcha.png')
-    with open(RP + 'captcha/captcha.txt', 'w') as value_file:
-      value_file.write('waiting')
+    img.save('captcha/captcha.png')
+    redis.set('captcha', 'waiting')
     return {}
 
   elif request.method == 'GET':
@@ -335,23 +331,17 @@ def captcha_img():
 def captcha_code_set(code):
   if len(code) < 4:
     abort(400)
-  cur_code = 'null'
-  with open(RP + 'captcha/captcha.txt', 'r') as value_file:
-    cur_code = value_file.readline()
+  cur_code = redis.get('captcha') or 'null'
   if cur_code != 'waiting':
     abort(400)
-  with open(RP + 'captcha/captcha.txt', 'w') as value_file:
-    value_file.write(code)
-    return {}
+  redis.set('captcha', code)
+  return {}
 
 @app.route('/captcha/code', methods=['GET'])
 def captcha_code_get():
-  code = 'null'
-  with open(RP + 'captcha/captcha.txt', 'r') as value_file:
-    code = value_file.readline()
+  code = redis.get('captcha') or 'null'
   if (code != 'waiting') and (code != 'stale'):
-    with open(RP + 'captcha/captcha.txt', 'w') as value_file:
-      value_file.write('stale')
+    redis.set('captcha', 'stale')
   return {'code': code}
 
 
