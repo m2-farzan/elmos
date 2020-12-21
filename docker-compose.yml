@@ -20,6 +20,9 @@ services:
                         - ${UI_PORT}:80
                 volumes:
                         - .:/var/www/elmos
+                depends_on:
+                        - db
+                        - redis
         db:
                 image: mariadb
                 container_name: elmos-db
@@ -41,7 +44,7 @@ services:
                 image: elmosdbwriter:latest
                 build:
                         context: ./microservices/dbwriter/
-                        dockerfile: ./microservices/dbwriter/
+                        dockerfile: ./Dockerfile
                 container_name: elmos-dbwriter
                 restart: always
                 environment:
@@ -49,5 +52,8 @@ services:
                         DB_PASS: ${DB_PASS}
                         DB_DATABASE: ${DB_DATABASE}
                 ports:
-                        - ${DBWRITER_PORT}:91
+                        - 127.0.0.1:${DBWRITER_PORT}:91
+                depends_on:
+                        - db
+                        - redis
 

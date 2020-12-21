@@ -284,4 +284,4 @@ def main():
 
 # main()
 if __name__ == '__main__':
-	app.run(debug=True, port=91)
+	app.run(port=91, host="0.0.0.0")
