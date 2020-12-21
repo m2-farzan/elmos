@@ -6,6 +6,7 @@ from flask_caching import Cache
 from hashlib import md5
 from os import environ
 from random import randint
+from redis import Redis
 
 app = Flask(__name__, static_url_path='')
 app.secret_key = 'CHANGE_ME_2'
@@ -27,6 +28,7 @@ CAPTCHA_MAINPAGE_RAND_COEFF = 3
 cache = Cache(app)
 mysql = MySQL(app)
 
+redis = Redis('redis', decode_responses=True)
 
 @app.route('/')
 def index():
@@ -144,7 +146,7 @@ def logout():
   return redirect(url_for('home'))
 
 def last_db_update():
-  return open(RP + 'database/last_db_update', 'r').readline()
+  return redis.get('last_db_update') or 'N/A'
 
 def affected_by_gender_mismatch_bug():
   cur = mysql.connection.cursor()
@@ -312,7 +314,7 @@ def user_summary():
 
 @app.route('/database_notes')
 def database_notes():
-  content = open(RP + 'database/errors.txt', 'r', encoding="utf-8").readlines()
+  content = redis.get('database_errors') or ['Not Available']
   return render_template('database_notes.html', content=content)
 
 @app.route('/captcha/img', methods=['GET', 'POST'])

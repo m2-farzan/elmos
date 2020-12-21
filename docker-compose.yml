@@ -2,6 +2,7 @@ version: '3.7'
 
 volumes:
         elmos-database:
+        elmos-redis:
 
 services:
         elmos:
@@ -30,3 +31,9 @@ services:
                         MYSQL_DATABASE: ${DB_DATABASE}
                 volumes:
                         - elmos-database:/var/lib/mysql
+        redis:
+                image: redis
+                container_name: elmos-redis
+                restart: always
+                volumes:
+                        - elmos-redis:/data
