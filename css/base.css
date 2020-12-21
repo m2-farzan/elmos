@@ -1,6 +1,9 @@
 /*
  * Globals
  */
+h3, h2 {
+  font-weight: 600;
+}
 
 /* Links */
 a,
