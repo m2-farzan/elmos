@@ -6,6 +6,9 @@ volumes:
 services:
         elmos:
                 image: elmos:latest
+                build:
+                        context: .
+                        dockerfile: ./Dockerfile
                 container_name: elmos-app
                 restart: always
                 ports:
