@@ -265,6 +265,8 @@ def user_units():
       continue
     disp_name = unit['name'] if unit['obsolete'] == 0 else '[حذف شده] - ' + unit['name']
     r.append({'name':disp_name, 'id':unit['id'], 'time_start_1':unit['time_start_1'], 'time_end_1':unit['time_end_1'], 'weekday_1':unit['weekday_1'], 'time_start_2':unit['time_start_2'], 'time_end_2':unit['time_end_2'], 'weekday_2':unit['weekday_2'], 'time_start_3':unit['time_start_3'], 'time_end_3':unit['time_end_3'], 'weekday_3':unit['weekday_3'], 'instructor':unit['instructor'], 'registered':unit['registered_count'], 'capacity':unit['capacity']})
+  cur.execute("UPDATE users SET last_access=NOW() WHERE id = %s", [ session['user_id'] ])
+  mysql.connection.commit()
   cur.close()
   return r
   
