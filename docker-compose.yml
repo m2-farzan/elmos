@@ -40,20 +40,20 @@ services:
                 restart: always
                 volumes:
                         - elmos-redis:/data
-        dbwriter:
-                image: elmosdbwriter:latest
+        dbwriter2:
+                image: elmosdbwriter2:latest
                 build:
-                        context: ./microservices/dbwriter/
+                        context: ./microservices/dbwriter2/
                         dockerfile: ./Dockerfile
-                container_name: elmos-dbwriter
+                container_name: elmos-dbwriter2
                 restart: always
                 environment:
                         DB_USER: ${DB_USER}
                         DB_PASS: ${DB_PASS}
                         DB_DATABASE: ${DB_DATABASE}
                 ports:
-                        - 127.0.0.1:${DBWRITER_PORT}:91
+                        - 127.0.0.1:${DBWRITER_PORT}:80
                 depends_on:
                         - db
                         - redis
-
+                        - elmos
