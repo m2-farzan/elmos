@@ -56,4 +56,19 @@ services:
                 depends_on:
                         - db
                         - redis
+        golman:
+                image: golman:latest
+                build:
+                        context: ./microservices/golman/
+                        dockerfile: ./Dockerfile
+                container_name: elmos-golman
+                restart: always
+                environment:
+                        EDU_DOMAIN: ${EDU_DOMAIN}
+                        EDU_USER: ${EDU_USER}
+                        EDU_PASS: ${EDU_PASS}
+                        EDU_TERM: ${EDU_TERM}
+                        GOLMAN_SLEEP: ${GOLMAN_SLEEP}
+                depends_on:
+                        - dbwriter2
                         - elmos
