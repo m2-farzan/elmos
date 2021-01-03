@@ -10,12 +10,13 @@ import xml.etree.ElementTree as XMLET
 DATA_AVAIL_PATH = "data_avail.xml"
 DATA_NA_PATH = "data_na.xml"
 
-mydb = mysql.connector.connect(
-  host="db",
-  user=environ['DB_USER'],
-  passwd=environ['DB_PASS'],
-  database=environ['DB_DATABASE']
-)
+db_config = {
+    'host': 'db',
+    'user': environ['DB_USER'],
+    'passwd': environ['DB_PASS'],
+    'database': environ['DB_DATABASE']
+}
+mydb = mysql.connector.connect(**db_config)
 
 redis = Redis('redis', db=0)
 
@@ -142,7 +143,13 @@ def fetch_file(f, mycursor, prefix = ""):
       redis.append("database_errors", "-- %s: %s | %s ................ %s\n"%er)
 
 def main():
-    mycursor = mydb.cursor()
+    global mydb
+    try:
+        mycursor = mydb.cursor()
+    except mysql.connector.errors.OperationalError: # Timed out
+        mydb = mysql.connector.connect(**db_config)
+        mycursor = mydb.cursor()
+
     mycursor.execute("UPDATE units SET obsolete = 1")
 
     redis.set("database_errors", '')
