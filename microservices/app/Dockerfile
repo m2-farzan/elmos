@@ -1,5 +1,7 @@
 FROM tiangolo/uwsgi-nginx-flask:python3.8
 
-COPY . /app
+COPY requirements.txt ./requirements.txt
 
 RUN pip3 install -r /app/requirements.txt
+
+COPY . /app
