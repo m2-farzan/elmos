@@ -19,8 +19,6 @@ services:
                         SECRET_KEY: ${SECRET_KEY}
                 ports:
                         - ${UI_PORT}:80
-                volumes:
-                        - .:/var/www/elmos
                 depends_on:
                         - db
                         - redis
