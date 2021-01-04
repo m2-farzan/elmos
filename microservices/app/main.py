@@ -131,6 +131,7 @@ def login_as(email, password):
   session['user_id'] = user['id'];
   session['user_dep_id'] = user['department_id'];
   session['gender'] = user['gender'];
+  session.permanent = True
   cur.close()
 
   if int(session['user_dep_id']) == 15:
