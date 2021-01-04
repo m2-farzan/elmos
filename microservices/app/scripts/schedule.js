@@ -1,3 +1,6 @@
+var myDefaultWhiteList = $.fn.selectpicker.Constructor.DEFAULTS.whiteList;
+myDefaultWhiteList.p = ['data-id', 'data-name', 'data-instructor', 'data-time-start-1', 'data-time-end-1', 'data-weekday-1', 'data-time-start-2', 'data-time-end-2', 'data-weekday-2', 'data-time-start-3', 'data-time-end-3', 'data-weekday-3', 'data-registered', 'data-capacity'];
+
 function hide_connecting_icon() {
   $("#connecting").addClass("invisible");
 }
@@ -132,30 +135,26 @@ function rem_item(id, temp) {
     upstream_add_remove(id, true);
 }
 
+function setup_hover_events() {
+  $("li").filter(":not(.once)").hover(function(){
+    $(this).addClass("once");
 
-var myDefaultWhiteList = $.fn.selectpicker.Constructor.DEFAULTS.whiteList;
-myDefaultWhiteList.p = ['data-id', 'data-name', 'data-instructor', 'data-time-start-1', 'data-time-end-1', 'data-weekday-1', 'data-time-start-2', 'data-time-end-2', 'data-weekday-2', 'data-time-start-3', 'data-time-end-3', 'data-weekday-3', 'data-registered', 'data-capacity'];
-
-$(".unit_select").on('shown.bs.select', function() {
-
-$("li").filter(":not(.once)").hover(function(){
-  $(this).addClass("once");
-  
-  var p = $(this).find("p");
-  disp_p(p, true);
-
-  
-  }, function(){
     var p = $(this).find("p");
-    var id = p.attr("data-id");
-    rem_item(id, true);
-});
+    disp_p(p, true);
 
-$('input').on('input',function(e){
-    $('.item-temp').remove();
-});
 
-});
+    }, function(){
+      var p = $(this).find("p");
+      var id = p.attr("data-id");
+      rem_item(id, true);
+  });
+
+  $('input').on('input',function(e){
+      $('.item-temp').remove();
+  });
+}
+
+$(".unit_select").on('shown.bs.select', setup_hover_events);
 
 $('.unit_select').on('changed.bs.select', function (e, clickedIndex, isSelected, previousValue) {
   var unit_id = this.options[clickedIndex].text;
@@ -177,4 +176,24 @@ $( document ).ready(function() {
   //$('.unit-item').tooltip({container:'body'});
 });
 
+$('#lazy_list').on('show.bs.select', function() {
+  if (lazy_list_initialized)
+    return;
 
+  var xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+      $('#lazy_list').html(this.responseText);
+      $('#lazy_list').selectpicker('refresh');
+      setup_hover_events();
+      lazy_list_initialized = true;
+    }
+  };
+  xhttp.open("GET", "/lazy-list", true);
+  xhttp.send();
+});
+lazy_list_initialized = false;
+
+$("body").on('DOMSubtreeModified', "#lazy_list_div", function() {
+    setup_hover_events();
+});

@@ -157,6 +157,10 @@ def schedule():
         flash(('yellow', 'متاسفانه بعضی از درس‌ها رو نتونستیم به درستی به دیتابیس منتقل کنیم. لطفا از پایین صفحه بخش نواقص دیتابیس را ببینید.'))
     return render_template('schedule.html', departments_list=departments_list, user_department=current_user_department, user_units=user_units(), departments_by_key=departments_by_key, last_update=last_db_update(), is_supporter=is_supporter(), support_prompt=SUPPORT_PROMPT, captcha_required=captcha_required)
 
+@app.route('/lazy-list')
+def lazy_list():
+  return render_template('lazy-list.html', departments_list=departments_list, last_update=last_db_update())
+
 def parse_dep(dep):
   cur = mysql.connection.cursor()
   rr = {}
