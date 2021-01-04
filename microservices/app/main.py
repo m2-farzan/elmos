@@ -9,7 +9,7 @@ from random import randint
 from redis import Redis
 
 app = Flask(__name__, static_url_path='')
-app.secret_key = 'CHANGE_ME_2'
+app.secret_key = environ['SECRET_KEY']
 
 app.config['MYSQL_HOST'] = 'db'
 app.config['MYSQL_USER'] = environ['DB_USER']
