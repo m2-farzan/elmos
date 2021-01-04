@@ -11,7 +11,7 @@
 - [ ] Set request limit per user
 - [ ] Add captcha to login & signup
 - [x] Move to nginx or remove web server altogether
-- [ ] Check hot reloading
+- [x] Check hot reloading
 - [ ] Favorites
 - [ ] Fix time table & exam table
 
