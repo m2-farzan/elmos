@@ -4,6 +4,7 @@ import json
 from os import environ
 import requests
 from time import sleep
+from sys import exit
 import utils
 
 class State:
@@ -82,7 +83,8 @@ def get_captcha(captcha, timeout, mode, captcha_base):
         sleep(SLEEP_CAP)
         if TIME_LEFT < 0:
             requests.post(captcha_base + '/code/stale')
-            raise Exception('Captcha timed out')
+            print('Captcha timed out')
+            exit(1)
 
     print('    Remote captcha was found: ' + code)
     
