@@ -14,6 +14,7 @@
 - [x] Check hot reloading
 - [ ] Favorites
 - [ ] Fix time table & exam table
+- [ ] Improve mobile UX
 
 ## Extra
 
