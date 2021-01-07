@@ -5,7 +5,7 @@
 ## Medium Priority
 
 - [x] Live updater
-- [ ] Notify user on database changes
+- [ ] History & change notification feature
 - [ ] Support load balancing
 - [ ] Address DNS DoS
 - [ ] Set request limit per user
@@ -13,8 +13,11 @@
 - [x] Move to nginx or remove web server altogether
 - [x] Check hot reloading
 - [ ] Favorites
-- [ ] Fix time table & exam table
-- [ ] Improve mobile UX
+- [x] Fix time table
+- [ ] Fix exam table
+- [x] Improve mobile UX
+- [ ] Support more universities
+- [ ] Add badges to selectboxes (full, schedule-interferent, exam-interferent, etc.)
 
 ## Extra
 
