@@ -227,6 +227,10 @@ $("body").on('DOMSubtreeModified', "#lazy_list_div", function() {
     setup_hover_events();
 });
 
+$('.unit_select').on('hidden.bs.select', function () {
+  $('.item-temp').remove();
+});
+
 // Tuning for mobile
 if (is_mobile) {
   $('.unit_select').on('changed.bs.select', function (e, clickedIndex, isSelected, previousValue) {
