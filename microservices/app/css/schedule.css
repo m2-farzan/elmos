@@ -98,13 +98,13 @@ body {
 .list_unit_name
 {
   margin-bottom: 0.2em;
-  font-size: 13px;
+  font-size: 0.85rem;
 }
 .list_unit_instructor
 {
   color: #f00;
   margin-bottom: 0.6em;
-  font-size: 11px;
+  font-size: 0.72rem;
   font-weight: light;
 }
 .list_unit_capacity
@@ -113,7 +113,7 @@ body {
   margin-bottom: 0.6em;
   margin-right: 0.5em;
   margin-left: 0.5em;
-  font-size: 11px;
+  font-size: 0.72rem;
   font-weight: light;
 }
 .dropdown-item
