@@ -27,3 +27,11 @@
 - [ ] Support bitcoin donations
 - [ ] Support multiple plans/terms
 - [ ] UI: Auto polling
+
+## Beyond Elmos
+
+- [ ] new columns must be added to database
+- [ ] dbwriter should initialize all tables if needed.
+- [ ] users signup/login must be updated
+- [ ] UI needs update
+- [ ] elmos-specific assets must become easier to configure.
