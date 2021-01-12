@@ -1,11 +1,8 @@
 import constants as c
-from datetime import datetime, timedelta
-import json
-from os import environ
-import requests
-from time import sleep
-from sys import exit
 import utils
+
+import requests
+
 
 class State:
     def __init__(self, state_keys, cookies):
@@ -21,77 +18,14 @@ class Edu:
         return '%s://%s' % (self.protocol, self.domain)
 
 
-def main(config):
-    print('Service started.')
-    print('Started login attempt...')
-    state = login(config['edu'], config['edu_user'], config['edu_pass'], config['captcha_timeout'], config['captcha_mode'], config['captcha_base']) # Blocks until captcha is fed.
-    print('Finished login attempt successfully.')
-
-    print('Started update loop.')
-
-    while True:
-        print('Started pulling data from ' + config['edu'].base() + ' at ' + str(datetime.now()))
-
-        state, data_avail, data_na = update(config['edu'], state, config['edu_term'])
-        with open('data_avail.xml', 'w') as f:
-            f.write(data_avail)
-        with open('data_na.xml', 'w') as f:
-            f.write(data_na)
-
-        print('Finished pulling data from upstream.')
-        print('    Data [avail] Length = {:,}'.format(len(data_avail)))
-        print('    Data [na] Length = {:,}'.format(len(data_na)))
-
-
-        print('Started posting data to dbwriter...')
-        upload_result = requests.post(config['dbwriter_endpoint'], files={'data_avail': data_avail, 'data_na': data_na})
-        print('Finished posting data to dbwriter with status code = ' + str(upload_result.status_code))
-
-
-        print('Entering sleep for ' + str(config['refresh_sleep']) + ' seconds.')
-        print('See you at ' + str(datetime.now() + timedelta(seconds=config['refresh_sleep'])))
-        print(32 * '-')
-        sleep(config['refresh_sleep'])
-        
-
+# Only call this after login
 def update(edu, state, term):
     state, data_avail = pull(edu, state, term, 'avail')
     state, data_na = pull(edu, state, term, 'na')
     return state, data_avail, data_na
 
 
-def get_captcha(captcha, timeout, mode, captcha_base):    
-    if mode == 'local':
-        with open('captcha.gif', 'wb') as f:
-            f.write(captcha)
-        return input('Enter CAPTCHA: ')
-
-    print('    Started captcha decoding in auto mode.')
-    requests.post(captcha_base + '/img', files={'file': captcha})
-    sleep(5)
-
-    print('    Waiting for remote captcha.')
-
-    SLEEP_CAP = 3
-    TIME_LEFT = timeout
-
-    while True:
-        code = json.loads( requests.get(captcha_base + '/code').content )['code']
-        if not (code == 'waiting' or code == 'stale'):
-            break
-        TIME_LEFT -= SLEEP_CAP
-        sleep(SLEEP_CAP)
-        if TIME_LEFT < 0:
-            requests.post(captcha_base + '/code/stale')
-            print('Captcha timed out')
-            exit(1)
-
-    print('    Remote captcha was found: ' + code)
-    
-    return code
-
-
-def login(edu, user, password, captcha_timeout, captcha_mode, captcha_base):
+def login(edu, user, password, captcha_functor):
     # Request the session cookie (ASP.NET_SessionId)
     session_id_req = requests.get(edu.base() + c.edu_endpoints['session_id'])
     cookies = session_id_req.cookies
@@ -124,7 +58,7 @@ def login(edu, user, password, captcha_timeout, captcha_mode, captcha_base):
     captcha = requests.get(edu.base() + c.edu_endpoints['captcha'], cookies=cookies)
 
     # Wait for captcha (Blocks and may bail with exception)
-    captcha_text = get_captcha(captcha.content, captcha_timeout, captcha_mode, captcha_base)
+    captcha_text = captcha_functor(captcha.content)
 
     # Actual post
     form = requests.post(
@@ -205,18 +139,3 @@ def pull(edu, state, term, course_status_filter):
     state.cookies = cookies
     state.state_keys = state_keys
     return state, xml_data
-
-
-if __name__ == "__main__":
-    config = {
-        'dbwriter_endpoint': 'http://dbwriter2/',
-        'edu': Edu(environ['EDU_DOMAIN'], 'https'),
-        'edu_user': environ['EDU_USER'],
-        'edu_pass': environ['EDU_PASS'],
-        'edu_term': environ['EDU_TERM'],
-        'refresh_sleep': int(environ['GOLMAN_SLEEP']),
-        'captcha_base': 'http://elmos/captcha',
-        'captcha_timeout': 270,
-        'captcha_mode': 'auto', # 'local': get captch from terminal. 'auto': submit captcha to web application and wait for users to help us.
-    }
-    main(config)
