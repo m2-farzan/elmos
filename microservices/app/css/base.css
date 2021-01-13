@@ -115,3 +115,8 @@ body {
 input, button {
     margin: 5px;
 }
+
+.dropdown-item
+{
+  text-align: right;
+}

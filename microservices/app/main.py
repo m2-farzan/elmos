@@ -155,7 +155,7 @@ def schedule():
   else:
     if int(session['user_dep_id']) == 18:
         flash(('yellow', 'متاسفانه بعضی از درس‌ها رو نتونستیم به درستی به دیتابیس منتقل کنیم. لطفا از پایین صفحه بخش نواقص دیتابیس را ببینید.'))
-    return render_template('schedule.html', departments_list=departments_list, user_department=current_user_department, user_units=user_units(), departments_by_key=departments_by_key, last_update=last_db_update(), is_supporter=is_supporter(), support_prompt=SUPPORT_PROMPT, captcha_required=captcha_required)
+    return render_template('schedule.html', user_department=current_user_department, user_units=user_units(), comdeps=comdeps, last_update=last_db_update(), is_supporter=is_supporter(), support_prompt=SUPPORT_PROMPT, captcha_required=captcha_required)
 
 @app.route('/lazy-list')
 def lazy_list():
@@ -190,15 +190,17 @@ def departments_list():
     r.append(parse_dep(dep))
   cur.close()
   return r
-  
-def departments_by_key():
-  r = {}
-  r['k90'] = get_dep(90)
-  r['k27'] = get_dep(27)
-  r['k14'] = get_dep(14)
-  r['k16'] = get_dep(16)
-  r['k26'] = get_dep(26)
-  r['k28'] = get_dep(28)
+
+def comdeps():
+  r = []
+  cur = mysql.connection.cursor()
+  cur.execute("SELECT id, dispname FROM comdeps ORDER BY sortorder ASC")
+  deps = cur.fetchall()
+  for dep in deps:
+    dep_data = get_dep(dep['id'])
+    dep_data['name'] = dep['dispname']
+    r.append(dep_data)
+  cur.close()
   return r
   
 def current_user_department():

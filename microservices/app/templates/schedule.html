@@ -105,7 +105,7 @@
         </div>
         <div class="left-panel vertical">
           
-          <p>دانشکده شما:</p>
+          <p>گروه شما:</p>
           
           {% cache 50, session['user_dep_id'], (session['gender']|string), last_update %}
           <div>
@@ -122,86 +122,25 @@
           {% endcache %}
 
           {% cache 50, (session['gender']|string), last_update %}
-          
+
           <p>دانشکده های عمومی:</p>
-          
-          <div>
-          <select class="selectpicker unit_select" multiple data-width="18em" data-live-search="true" data-selected-text-format="static" title="{{departments_by_key().k90.name}}">
-          {% for unit in departments_by_key().k90.units %}
-            <option 
-            
-              data-content="<p id='{{unit.id}}_data' class='data_info' data-id='{{unit.id}}' data-name='{{unit.name}}' data-instructor='{{unit.instructor}}' data-time-start-1='{{unit.time_start_1}}' data-time-end-1='{{unit.time_end_1}}' data-weekday-1='{{unit.weekday_1}}' data-time-start-2='{{unit.time_start_2}}' data-time-end-2='{{unit.time_end_2}}' data-weekday-2='{{unit.weekday_2}}' data-time-start-3='{{unit.time_start_3}}' data-time-end-3='{{unit.time_end_3}}' data-weekday-3='{{unit.weekday_3}}' data-registered='{{unit.registered}}' data-capacity='{{unit.capacity}}''><div><p class='list_unit_name'>{{unit.name}}</p><p class='list_unit_instructor'>{{unit.instructor}}<span class='list_unit_capacity'>{{unit.registered}}/{{unit.capacity}}</span></p></div>"
-            
-             >{{unit.id}}</option>
+          {% for dep in comdeps() %}
+            <div>
+            <select class="selectpicker unit_select" multiple data-width="18em" data-live-search="true" data-selected-text-format="static" title="{{dep.name}}">
+            {% for unit in dep.units %}
+              <option 
+              
+                data-content="<p id='{{unit.id}}_data' class='data_info' data-id='{{unit.id}}' data-name='{{unit.name}}' data-instructor='{{unit.instructor}}' data-time-start-1='{{unit.time_start_1}}' data-time-end-1='{{unit.time_end_1}}' data-weekday-1='{{unit.weekday_1}}' data-time-start-2='{{unit.time_start_2}}' data-time-end-2='{{unit.time_end_2}}' data-weekday-2='{{unit.weekday_2}}' data-time-start-3='{{unit.time_start_3}}' data-time-end-3='{{unit.time_end_3}}' data-weekday-3='{{unit.weekday_3}}' data-registered='{{unit.registered}}' data-capacity='{{unit.capacity}}''><div><p class='list_unit_name'>{{unit.name}}</p><p class='list_unit_instructor'>{{unit.instructor}}<span class='list_unit_capacity'>{{unit.registered}}/{{unit.capacity}}</span></p></div>"
+              
+              >{{unit.id}}</option>
+            {% endfor %}
+            </select>
+            </div>
           {% endfor %}
-          </select>
-          </div>
           
-          
-          <div>
-          <select class="selectpicker unit_select" multiple data-width="18em" data-live-search="true" data-selected-text-format="static" title="{{departments_by_key().k14.name}}">
-          {% for unit in departments_by_key().k14.units %}
-            <option 
-            
-              data-content="<p id='{{unit.id}}_data' class='data_info' data-id='{{unit.id}}' data-name='{{unit.name}}' data-instructor='{{unit.instructor}}' data-time-start-1='{{unit.time_start_1}}' data-time-end-1='{{unit.time_end_1}}' data-weekday-1='{{unit.weekday_1}}' data-time-start-2='{{unit.time_start_2}}' data-time-end-2='{{unit.time_end_2}}' data-weekday-2='{{unit.weekday_2}}' data-time-start-3='{{unit.time_start_3}}' data-time-end-3='{{unit.time_end_3}}' data-weekday-3='{{unit.weekday_3}}' data-registered='{{unit.registered}}' data-capacity='{{unit.capacity}}''><div><p class='list_unit_name'>{{unit.name}}</p><p class='list_unit_instructor'>{{unit.instructor}}<span class='list_unit_capacity'>{{unit.registered}}/{{unit.capacity}}</span></p></div>"
-            
-             >{{unit.id}}</option>
-          {% endfor %}
-          </select>
-          </div>
-          
-          <div>
-          <select class="selectpicker unit_select" multiple data-width="18em" data-live-search="true" data-selected-text-format="static" title="{{departments_by_key().k16.name}}">
-          {% for unit in departments_by_key().k16.units %}
-            <option 
-            
-              data-content="<p id='{{unit.id}}_data' class='data_info' data-id='{{unit.id}}' data-name='{{unit.name}}' data-instructor='{{unit.instructor}}' data-time-start-1='{{unit.time_start_1}}' data-time-end-1='{{unit.time_end_1}}' data-weekday-1='{{unit.weekday_1}}' data-time-start-2='{{unit.time_start_2}}' data-time-end-2='{{unit.time_end_2}}' data-weekday-2='{{unit.weekday_2}}' data-time-start-3='{{unit.time_start_3}}' data-time-end-3='{{unit.time_end_3}}' data-weekday-3='{{unit.weekday_3}}' data-registered='{{unit.registered}}' data-capacity='{{unit.capacity}}''><div><p class='list_unit_name'>{{unit.name}}</p><p class='list_unit_instructor'>{{unit.instructor}}<span class='list_unit_capacity'>{{unit.registered}}/{{unit.capacity}}</span></p></div>"
-            
-             >{{unit.id}}</option>
-          {% endfor %}
-          </select>
-          </div>
-          
-<!--
-          <div>
-          <select class="selectpicker unit_select" multiple data-width="18em" data-live-search="true" data-selected-text-format="static" title="{{departments_by_key().k26.name}}">
-          {% for unit in departments_by_key().k26.units %}
-            <option 
-            
-              data-content="<p id='{{unit.id}}_data' class='data_info' data-id='{{unit.id}}' data-name='{{unit.name}}' data-instructor='{{unit.instructor}}' data-time-start-1='{{unit.time_start_1}}' data-time-end-1='{{unit.time_end_1}}' data-weekday-1='{{unit.weekday_1}}' data-time-start-2='{{unit.time_start_2}}' data-time-end-2='{{unit.time_end_2}}' data-weekday-2='{{unit.weekday_2}}' data-time-start-3='{{unit.time_start_3}}' data-time-end-3='{{unit.time_end_3}}' data-weekday-3='{{unit.weekday_3}}' data-registered='{{unit.registered}}' data-capacity='{{unit.capacity}}''><div><p class='list_unit_name'>{{unit.name}}</p><p class='list_unit_instructor'>{{unit.instructor}}</p></div>"
-            
-             >{{unit.id}}</option>
-          {% endfor %}
-          </select>
-          </div>
--->
-          
-          <div>
-          <select class="selectpicker unit_select" multiple data-width="18em" data-live-search="true" data-selected-text-format="static" title="{{departments_by_key().k28.name}}">
-          {% for unit in departments_by_key().k28.units %}
-            <option 
-            
-              data-content="<p id='{{unit.id}}_data' class='data_info' data-id='{{unit.id}}' data-name='{{unit.name}}' data-instructor='{{unit.instructor}}' data-time-start-1='{{unit.time_start_1}}' data-time-end-1='{{unit.time_end_1}}' data-weekday-1='{{unit.weekday_1}}' data-time-start-2='{{unit.time_start_2}}' data-time-end-2='{{unit.time_end_2}}' data-weekday-2='{{unit.weekday_2}}' data-time-start-3='{{unit.time_start_3}}' data-time-end-3='{{unit.time_end_3}}' data-weekday-3='{{unit.weekday_3}}' data-registered='{{unit.registered}}' data-capacity='{{unit.capacity}}''><div><p class='list_unit_name'>{{unit.name}}</p><p class='list_unit_instructor'>{{unit.instructor}}<span class='list_unit_capacity'>{{unit.registered}}/{{unit.capacity}}</span></p></div>"
-            
-             >{{unit.id}}</option>
-          {% endfor %}
-          </select>
-          </div>
-          
-          <div>
-          <select class="selectpicker unit_select" multiple data-width="18em" data-live-search="true" data-selected-text-format="static" title="{{departments_by_key().k27.name}}">
-          {% for unit in departments_by_key().k27.units %}
-            <option 
-            
-              data-content="<p id='{{unit.id}}_data' class='data_info' data-id='{{unit.id}}' data-name='{{unit.name}}' data-instructor='{{unit.instructor}}' data-time-start-1='{{unit.time_start_1}}' data-time-end-1='{{unit.time_end_1}}' data-weekday-1='{{unit.weekday_1}}' data-time-start-2='{{unit.time_start_2}}' data-time-end-2='{{unit.time_end_2}}' data-weekday-2='{{unit.weekday_2}}' data-time-start-3='{{unit.time_start_3}}' data-time-end-3='{{unit.time_end_3}}' data-weekday-3='{{unit.weekday_3}}' data-registered='{{unit.registered}}' data-capacity='{{unit.capacity}}''><div><p class='list_unit_name'>{{unit.name}}</p><p class='list_unit_instructor'>{{unit.instructor}}<span class='list_unit_capacity'>{{unit.registered}}/{{unit.capacity}}</span></p></div>"
-            
-             >{{unit.id}}</option>
-          {% endfor %}
-          </select>
-          </div>
           {% endcache %}
           
-          <p>همه دانشکده ها:</p>
+          <p>همه گروه ها:</p>
           
           <div id="lazy_list_div">
           <select id="lazy_list" class="selectpicker unit_select" multiple data-width="18em" data-live-search="true" data-selected-text-format="static" title="همه دانشکده ها">

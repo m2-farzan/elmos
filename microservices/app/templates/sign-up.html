@@ -17,8 +17,8 @@
       <label for="inputPassword" class="sr-only">Password</label>
       <input name="password" type="password" id="inputPassword" class="form-control" placeholder="رمز" required>
       <div>
-        <label>دانشکده: </label>
-        <select name="user_department" class="selectpicker">
+        <label>گروه: </label>
+        <select name="user_department" class="selectpicker" data-live-search="true" data-width="20em">
           {% for department in departments %}
           <option>{{department}}</option>
           {% endfor %}
