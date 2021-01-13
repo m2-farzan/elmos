@@ -46,7 +46,7 @@ def fetch_file(f, mycursor, prefix = ""):
     try:
       data = root[j].attrib
 
-      dep_id = data['B2'] # !
+      dep_id = data['B2'] + data['B4'] # !
       id_raw = data['C1'] # !
       name = data['C2'] # !
       weight = data['C3'] # !
