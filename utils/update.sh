@@ -1,6 +1,6 @@
 #!/bin/bash
 
-git pull origin master
+git pull origin ${PROJECT_BASENAME}
 
 export $(xargs <.env)
 
