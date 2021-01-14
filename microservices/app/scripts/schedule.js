@@ -174,6 +174,8 @@ function setup_hover_events() {
     return;
 
   $("li").filter(":not(.once)").hover(function(){
+    $('.item-temp').remove();
+
     $(this).addClass("once");
 
     var p = $(this).find("p");
