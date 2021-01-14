@@ -29,6 +29,7 @@
 - [ ] Support bitcoin donations
 - [ ] Support multiple plans/terms
 - [ ] UI: Auto polling
+- [ ] Normalize farsi-en digits in search box
 
 ## Beyond Elmos
 
