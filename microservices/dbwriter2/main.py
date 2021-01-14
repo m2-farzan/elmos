@@ -2,9 +2,10 @@
 import mysql.connector
 from persian_datetime import now_to_str
 from flask import Flask, request
+import json
 from os import environ, uname
 from redis import Redis
-from utils import extract_weekdays, extract_week_times, filter_farsi, get_exam_datetime, simplify_dep_name, limit_warning, xml_preprocess
+from utils import extract_schedule, filter_farsi, get_exam_datetime, simplify_dep_name, limit_warning, xml_preprocess
 import xml.etree.ElementTree as XMLET
 
 DATA_AVAIL_PATH = "data_avail.xml"
@@ -103,37 +104,14 @@ def fetch_file(f, mycursor, prefix = ""):
           print (n1)
           print(n2)
       
-      # ravesh tolid:
-      if id_raw == '1911395_01':
-        days = [2]
-      else:
-        days = extract_weekdays(schedule_time)
-      day_1 = days[0]
-      day_2 = -1
-      day_3 = -1
-      if len(days) > 1:
-        day_2 = days[1]
-      if len(days) > 2:
-        day_3 = days[2]
-      start_1 = extract_week_times(schedule_time,1)[0]
-      end_1 = extract_week_times(schedule_time,1)[1]
-      start_2 = -1
-      end_2 = -1
-      start_3 = -1
-      end_3 = -1
-      if len(days) > 1:
-        start_2 = extract_week_times(schedule_time,2)[0]
-        end_2 = extract_week_times(schedule_time,2)[1]
-      if len(days) > 2:
-        start_3 = extract_week_times(schedule_time,3)[0]
-        end_3 = extract_week_times(schedule_time,3)[1]
+      schedule = json.dumps( extract_schedule(schedule_time) )
     except Exception as e:
       # raise e
       print("parse error at %d [%f, %f]"%(j,exam_day, exam_time))
       errors.append(('PE', id_raw, name_f, str(e)))
       continue
     try:
-      mycursor.execute("REPLACE INTO units(id,department,name,instructor,weekday_1,time_start_1,time_end_1,weekday_2,time_start_2,time_end_2,weekday_3,time_start_3,time_end_3,exam_day,exam_time,capacity,registered_count,weight,gender,obsolete) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,0)", (id_f,dep_id,name_f,instructor_f,day_1,start_1,end_1,day_2,start_2,end_2,day_3,start_3,end_3,exam_day,exam_time,capacity,registered,weight,gender_f))
+      mycursor.execute("REPLACE INTO units(id,department,name,instructor,schedule,exam_day,exam_time,capacity,registered_count,weight,gender,obsolete) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,0)", (id_f,dep_id,name_f,instructor_f,schedule,exam_day,exam_time,capacity,registered,weight,gender_f))
     except Exception as e:
       # raise e
       print("insert error at %d"%(j))

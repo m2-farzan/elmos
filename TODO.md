@@ -19,7 +19,7 @@
 - [ ] Support more universities
 - [ ] Add badges to selectboxes (full, schedule-interferent, exam-interferent, etc.)
 - [ ] Allow search by group/department in the lazy list
-- [ ] Support more than 3 classes per week
+- [x] Support more than 3 classes per week
 
 ## Extra
 

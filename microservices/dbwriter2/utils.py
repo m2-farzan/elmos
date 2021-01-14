@@ -3,12 +3,21 @@ import re
 def filter_farsi(txt):
   return txt.replace( 'ي', 'ی').replace('ك', 'ک').replace('<br>','،')
   
+def extract_schedule(txt):
+  r = []
+  weekdays = extract_weekdays(txt)
+  for i in range(len(weekdays)):
+    start, end = extract_week_times(txt, i)
+    schedule_tuple = (weekdays[i], start, end)
+    if not schedule_tuple in r: # To avoid duplicates.
+      r.append(schedule_tuple)
+  return r
+
+# returns days e.g. [0, 2, 2] === shanbe, 2shanbe, 2shanbe
 def extract_weekdays(txt):
   if txt == "":
     raise Exception("زمان کلاس در گلستان ذکر نشده است ⚪")
   d = txt.count('شنبه')
-  if d > 3:
-    raise Exception("بیشتر از ۳ جلسه در هفته فعلا پشتیبانی نمیشه 🔴")
   if d < 1:
     raise Exception("class time not specified")
   times = re.findall(r"(شنبه)|(يك شنبه)|(دو شنبه)|(سه شنبه)|(چهار شنبه)|(پنج شنبه)", txt)
@@ -21,7 +30,7 @@ def extract_weekdays(txt):
   
 def extract_week_times(txt, no):
   times = re.findall(r"[0-9]{2}:[0-9]{2}-[0-9]{2}:[0-9]{2}", txt)
-  time_text = times[no - 1]
+  time_text = times[no]
   start = int(time_text[0:2]) + int(time_text[3:5])/60.0
   end = int(time_text[6:8]) + int(time_text[9:11])/60.0
   return (start, end)

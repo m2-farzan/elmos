@@ -54,17 +54,17 @@ function get_item_geometry(start_time, end_time, weekday) {
 
 function get_item_rects(unit, temp) {
   r = [];
-  for (i=1; i<=3; i++) {
-    if (unit['weekday_' + i] > -1) {
-      r.push( get_item_rect(unit, i, temp) );
-    }
+  schedule_data = JSON.parse(unit.schedule)
+  for (i=0; i<schedule_data.length; i++) {
+    r.push( get_item_rect(unit, i, temp) );
   }
   return r;
 }
 
 function get_item_rect(unit, no, temp) {
+  current_schedule_data = JSON.parse(unit.schedule)[no];
   var div = document.createElement("div");
-  var geo = get_item_geometry(unit['time_start_' + no], unit['time_end_' + no], unit['weekday_' + no]);
+  var geo = get_item_geometry(current_schedule_data[1], current_schedule_data[2], current_schedule_data[0]);
   var size_h = geo[0];
   var size_v = geo[1];
   var right = geo[2];
