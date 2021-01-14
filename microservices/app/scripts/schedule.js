@@ -103,8 +103,22 @@ function get_item_rect(unit, no, temp) {
   div.appendChild(p1);
   div.appendChild(p2);
   
-  div.setAttribute("title",unit.id+"\n\n"+unit.name+"\n"+"\n"+unit.instructor+"\n\n"+unit.registered_count+"/"+unit.capacity);
-  div.setAttribute("data-placement","bottom");
+  if (!temp) {
+    div.setAttribute("title",
+      "<p>" + unit.id + "</p>" + 
+      "<p><b>" + unit.name + "</b></p>" + 
+      "<p>" + unit.instructor + "</p>" + 
+      "<p>" + unit.registered_count+"/"+unit.capacity + "</p>"
+    );
+    $(div).tooltip({
+      container: div,
+      delay: { "show": 500, "hide": 0 },
+      placement: 'bottom',
+      offset: '80, 5',
+      animation: false,
+      html: true,
+    });
+  }
   
   return div;
 }
