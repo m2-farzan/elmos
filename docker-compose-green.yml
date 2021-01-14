@@ -6,7 +6,7 @@ services:
                 build:
                         context: ./microservices/app/
                         dockerfile: ./Dockerfile
-                container_name: elmos-app-green
+                container_name: ${PROJECT_BASENAME}-app-green
                 restart: always
                 environment:
                         DB_USER: ${DB_USER}

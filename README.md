@@ -19,19 +19,19 @@ export $(xargs <.env)
 Load database from dump:
 
 ```bash
-docker exec -i elmos-db mysql -u$DB_USER -p$DB_PASS $DB_DATABASE < data.sql
+docker exec -i ${PROJECT_BASENAME}-db mysql -u$DB_USER -p$DB_PASS $DB_DATABASE < data.sql
 ```
 
 Save database to dump:
 
 ```bash
-docker exec -i elmos-db mysqldump -u$DB_USER -p$DB_PASS $DB_DATABASE > elmos-db_$(date +%Y-%b-%d_%H-%M_%z).sql
+docker exec -i ${PROJECT_BASENAME}-db mysqldump -u$DB_USER -p$DB_PASS $DB_DATABASE > ${PROJECT_BASENAME}-db_$(date +%Y-%b-%d_%H-%M_%z).sql
 ```
 
 See latest logins:
 
 ```bash
-docker exec -i elmos-db mysql -u$DB_USER -p$DB_PASS $DB_DATABASE -e "SELECT last_access, id, department_id, gender, email FROM users ORDER BY last_access DESC LIMIT 16"
+docker exec -i ${PROJECT_BASENAME}-db mysql -u$DB_USER -p$DB_PASS $DB_DATABASE -e "SELECT last_access, id, department_id, gender, email FROM users ORDER BY last_access DESC LIMIT 16"
 ```
 
 # Hot Deployment

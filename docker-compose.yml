@@ -10,7 +10,7 @@ services:
                 build:
                         context: ./microservices/app/
                         dockerfile: ./Dockerfile
-                container_name: elmos-app
+                container_name: ${PROJECT_BASENAME}-app
                 restart: always
                 environment:
                         DB_USER: ${DB_USER}
@@ -24,7 +24,7 @@ services:
                         - redis
         db:
                 image: mariadb
-                container_name: elmos-db
+                container_name: ${PROJECT_BASENAME}-db
                 restart: always
                 environment:
                         MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASS}
@@ -35,7 +35,7 @@ services:
                         - elmos-database:/var/lib/mysql
         redis:
                 image: redis
-                container_name: elmos-redis
+                container_name: ${PROJECT_BASENAME}-redis
                 restart: always
                 volumes:
                         - elmos-redis:/data
@@ -44,7 +44,7 @@ services:
                 build:
                         context: ./microservices/dbwriter2/
                         dockerfile: ./Dockerfile
-                container_name: elmos-dbwriter2
+                container_name: ${PROJECT_BASENAME}-dbwriter2
                 restart: always
                 environment:
                         DB_USER: ${DB_USER}
@@ -60,7 +60,7 @@ services:
                 build:
                         context: ./microservices/golman/
                         dockerfile: ./Dockerfile
-                container_name: elmos-golman
+                container_name: ${PROJECT_BASENAME}-golman
                 restart: always
                 environment:
                         EDU_DOMAIN: ${EDU_DOMAIN}
