@@ -1,16 +1,10 @@
+{% import 'constants.jinja' as C %}
+
 <!DOCTYPE html>
 <html dir="rtl">
   <head>
     <meta charset="utf-8">
-    <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-176268794-3"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-
-      gtag('config', 'UA-176268794-3');
-    </script>
+    {{C.ga_script}}
     <title>برنامه هفتگی</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="/css/base.css?v=2">
@@ -24,7 +18,7 @@
     <header class="masthead mb-auto">
         <div class="inner">
           <h3 class="masthead-brand">
-            <a href="/home">دستیار انتخاب واحد علموص (آزمایشی)</a>
+            <a href="/home">{{C.site_title}}</a>
             <small id="connecting" class="sync invisible">در حال همگام سازی...</small>
           </h3>
           <nav class="nav nav-masthead justify-content-center">
@@ -58,9 +52,7 @@
     
     <footer class="mastfoot mt-auto">
       <div class="inner">
-        <p>
-  این سایت شخصی و غیر رسمیه و با دانشگاه علم و صنعت در ارتباط نیست. ایمیل من: elmos.vahed@gmail.com
-        </p>
+        <p>{{C.footnote_text}}</p>
       </div>
     </footer>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>

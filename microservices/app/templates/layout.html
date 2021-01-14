@@ -1,31 +1,25 @@
+{% import 'constants.jinja' as C %}
+
 <!DOCTYPE html>
 <html dir="rtl">
   <head>
     <meta charset="utf-8">
     <!-- Primary Meta Tags -->
-    <meta name="title" content="دستیار انتخاب واحد علموص">
+    <meta name="title" content="{{C.site_short_title}}">
     <meta name="description" content="این سایت به شما کمک میکنه برای ترم آینده راحت تر و سریعتر برنامه ریزی کنین">
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
-    <meta property="og:url" content="http://elmos-vahed.ir/">
-    <meta property="og:title" content="دستیار انتخاب واحد علموص">
+    <meta property="og:url" content="{{C.site_url}}">
+    <meta property="og:title" content="{{C.site_short_title}}">
     <meta property="og:description" content="این سایت به شما کمک میکنه برای ترم آینده راحت تر و سریعتر برنامه ریزی کنین">
     <meta property="og:image" content="/images/preview.png">
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:url" content="http://elmos-vahed.ir/">
-    <meta property="twitter:title" content="دستیار انتخاب واحد علموص">
+    <meta property="twitter:url" content="{{C.site_url}}">
+    <meta property="twitter:title" content="{{C.site_short_title}}">
     <meta property="twitter:description" content="این سایت به شما کمک میکنه برای ترم آینده راحت تر و سریعتر برنامه ریزی کنین">
     <meta property="twitter:image" content="/images/preview.png">
-    <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-176268794-3"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-
-      gtag('config', 'UA-176268794-3');
-    </script>
+    {{C.ga_script}}
     <title>{% block title %}{% endblock %}</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="/css/base.css?v=2">
@@ -38,7 +32,7 @@
     <header class="masthead mb-auto">
       <div class="inner">
         <h3 class="masthead-brand">
-          <a href="/">دستیار انتخاب واحد علموص (آزمایشی)</a>
+          <a href="/">{{C.site_title}}</a>
         </h3>
         <nav class="nav nav-masthead justify-content-center">
           <a class="nav-link active" href="http://term.inator.ir">الهام گرفته از ترمیناتور</a>
@@ -48,9 +42,7 @@
     {% block body %}{% endblock %}
     <footer class="mastfoot mt-auto">
       <div class="inner">
-        <p>
-  این سایت شخصی و غیر رسمیه و با دانشگاه علم و صنعت در ارتباط نیست. ایمیل ما: elmos.vahed@gmail.com
-        </p>
+        <p>{{C.footnote_text}}</p>
       </div>
     </footer>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
