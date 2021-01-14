@@ -7,6 +7,20 @@ from hashlib import md5
 from os import environ
 from random import randint
 from redis import Redis
+import decimal
+import flask.json
+
+class MyJSONEncoder(flask.json.JSONEncoder):
+    def __init__(self, **kwargs):
+        kwargs['ensure_ascii'] = False
+        kwargs['sort_keys'] = False
+        super(MyJSONEncoder, self).__init__(**kwargs)
+    def default(self, obj):
+        if isinstance(obj, decimal.Decimal):
+            # Convert decimal instances to strings.
+            return str(obj)
+        return super(MyJSONEncoder, self).default(obj)
+
 
 app = Flask(__name__, static_url_path='')
 app.secret_key = environ['SECRET_KEY']
@@ -28,6 +42,8 @@ cache = Cache(app)
 mysql = MySQL(app)
 
 redis = Redis('redis', decode_responses=True)
+
+app.json_encoder = MyJSONEncoder
 
 @app.route('/')
 def index():
@@ -169,7 +185,7 @@ def parse_dep(dep):
   cur.execute("SELECT * FROM units WHERE department=%s AND gender IN(0,%s) AND obsolete=0 ORDER BY name ASC",(dep['id'], session['gender']))
   units = cur.fetchall()
   for unit in units:
-    rr['units'].append({'name':unit['name'], 'id':unit['id'], 'time_start_1':unit['time_start_1'], 'time_end_1':unit['time_end_1'], 'weekday_1':unit['weekday_1'], 'time_start_2':unit['time_start_2'], 'time_end_2':unit['time_end_2'], 'weekday_2':unit['weekday_2'], 'time_start_3':unit['time_start_3'], 'time_end_3':unit['time_end_3'], 'weekday_3':unit['weekday_3'], 'instructor':unit['instructor'], 'capacity':unit['capacity'], 'registered':unit['registered_count']})
+    rr['units'].append(dict(unit))
   cur.close()
   return rr
   
@@ -256,7 +272,7 @@ def user_units():
     if unit == None:
       continue
     disp_name = unit['name'] if unit['obsolete'] == 0 else '[حذف شده] - ' + unit['name']
-    r.append({'name':disp_name, 'id':unit['id'], 'time_start_1':unit['time_start_1'], 'time_end_1':unit['time_end_1'], 'weekday_1':unit['weekday_1'], 'time_start_2':unit['time_start_2'], 'time_end_2':unit['time_end_2'], 'weekday_2':unit['weekday_2'], 'time_start_3':unit['time_start_3'], 'time_end_3':unit['time_end_3'], 'weekday_3':unit['weekday_3'], 'instructor':unit['instructor'], 'registered':unit['registered_count'], 'capacity':unit['capacity']})
+    r.append({**dict(unit), 'name':disp_name})
   cur.execute("UPDATE users SET last_access=NOW() WHERE id = %s", [ session['user_id'] ])
   mysql.connection.commit()
   cur.close()

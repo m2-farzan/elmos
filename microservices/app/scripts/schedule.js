@@ -8,7 +8,7 @@ var is_mobile = window.mobileCheck();
 
 
 var myDefaultWhiteList = $.fn.selectpicker.Constructor.DEFAULTS.whiteList;
-myDefaultWhiteList.p = ['data-id', 'data-name', 'data-instructor', 'data-time-start-1', 'data-time-end-1', 'data-weekday-1', 'data-time-start-2', 'data-time-end-2', 'data-weekday-2', 'data-time-start-3', 'data-time-end-3', 'data-weekday-3', 'data-registered', 'data-capacity'];
+myDefaultWhiteList.p = ['data-unit'];
 
 function hide_connecting_icon() {
   $("#connecting").addClass("invisible");
@@ -52,9 +52,19 @@ function get_item_geometry(start_time, end_time, weekday) {
   return [size_h, size_v, right, top]
 }
 
-function get_item_rect(id, name, instructor, weekday_1, start_time_1, end_time_1, registered, capacity, temp) {
+function get_item_rects(unit, temp) {
+  r = [];
+  for (i=1; i<=3; i++) {
+    if (unit['weekday_' + i] > -1) {
+      r.push( get_item_rect(unit, i, temp) );
+    }
+  }
+  return r;
+}
+
+function get_item_rect(unit, no, temp) {
   var div = document.createElement("div");
-  var geo = get_item_geometry(start_time_1, end_time_1, weekday_1);
+  var geo = get_item_geometry(unit['time_start_' + no], unit['time_end_' + no], unit['weekday_' + no]);
   var size_h = geo[0];
   var size_v = geo[1];
   var right = geo[2];
@@ -63,19 +73,19 @@ function get_item_rect(id, name, instructor, weekday_1, start_time_1, end_time_1
   
   if (temp)
   {
-    div.setAttribute("id", id + "-temp");
-    div.setAttribute("class", "unit-item item-temp "+id+"-temp");
+    div.setAttribute("id", unit.id + "-temp");
+    div.setAttribute("class", "unit-item item-temp " + unit.id + "-temp");
   }
   else
   {
-    div.setAttribute("id", id);
-    div.setAttribute("class", "unit-item item-normal "+id);
+    div.setAttribute("id", unit.id);
+    div.setAttribute("class", "unit-item item-normal " + unit.id);
   }
   
   var p1 = document.createElement("p");
   p1.setAttribute("class", "item-text item-name");
-  var t1 = document.createTextNode(name);
-  if (name.length >= 20)
+  var t1 = document.createTextNode(unit.name);
+  if (unit.name.length >= 20)
   {
     p1.setAttribute("style", "font-size: x-small");
   }
@@ -83,8 +93,8 @@ function get_item_rect(id, name, instructor, weekday_1, start_time_1, end_time_1
   
   var p2 = document.createElement("p");
   p2.setAttribute("class", "item-text item-instructor");
-  var t2 = document.createTextNode(instructor);
-  if (name.length > 12 && instructor.length > 16)
+  var t2 = document.createTextNode(unit.instructor);
+  if (unit.name.length > 12 && unit.instructor.length > 16)
   {
     p2.setAttribute("style", "font-size: xx-small");
   }
@@ -93,61 +103,46 @@ function get_item_rect(id, name, instructor, weekday_1, start_time_1, end_time_1
   div.appendChild(p1);
   div.appendChild(p2);
   
-  div.setAttribute("title",id+"\n\n"+name+"\n"+"\n"+instructor+"\n\n"+registered+"/"+capacity);
+  div.setAttribute("title",unit.id+"\n\n"+unit.name+"\n"+"\n"+unit.instructor+"\n\n"+unit.registered_count+"/"+unit.capacity);
   div.setAttribute("data-placement","bottom");
   
   return div;
 }
 
-function disp_item(id, name, instructor, weekday_1, start_time_1, end_time_1, weekday_2, start_time_2, end_time_2, weekday_3, start_time_3, end_time_3, registered, capacity, temp) {
-  var div1 = get_item_rect(id, name, instructor, weekday_1, start_time_1, end_time_1, registered, capacity, temp);
-  var div2 = get_item_rect(id, name, instructor, weekday_2, start_time_2, end_time_2, registered, capacity, temp);
-  var div3 = get_item_rect(id, name, instructor, weekday_3, start_time_3, end_time_3, registered, capacity, temp);
+function disp_item(unit, temp) {
+  var divs = get_item_rects(unit, temp);
   
-  document.getElementById("schedule-table").appendChild(div1);
-  document.getElementById("schedule-table").appendChild(div2);
-  document.getElementById("schedule-table").appendChild(div3);
+  for (i=0; i<divs.length; i++) {
+    document.getElementById("schedule-table").appendChild(divs[i]);
+  }
   
   //$('.unit-item').tooltip({container:'body'});
   if(!temp) {
     
     var click_remove = function()
       {
-        rem_item(id, false);
+        rem_item(unit.id, false);
         $('.unit_select').selectpicker('deselectAll');
         arr = []
         $(".unit-item").each(function(index) { arr.push( $(this).attr("id")); });
         $('.unit_select').selectpicker('val', arr );
         $('.unit_select').selectpicker('refresh');
       }
-    
-    $(div1).click(click_remove);
-    $(div2).click(click_remove);
-    $(div3).click(click_remove);
+
+    for (i=0; i<divs.length; i++) {
+      $(divs[i]).click(click_remove);
+    }
   }
 }
 
 function disp_p(p, temp)
 {
-  var id = p.attr("data-id");
-  var name = p.attr("data-name");
-  var instructor = p.attr("data-instructor");
-  var start_time_1 = p.attr("data-time-start-1");
-  var end_time_1 = p.attr("data-time-end-1");
-  var weekday_1 = p.attr("data-weekday-1");
-  var start_time_2 = p.attr("data-time-start-2");
-  var end_time_2 = p.attr("data-time-end-2");
-  var weekday_2 = p.attr("data-weekday-2");
-  var start_time_3 = p.attr("data-time-start-3");
-  var end_time_3 = p.attr("data-time-end-3");
-  var weekday_3 = p.attr("data-weekday-3");
-  var registered = p.attr("data-registered");
-  var capacity = p.attr("data-capacity");
+  var unit = JSON.parse(unescape(p.attr("data-unit")));
 
-  disp_item(id, name, instructor, weekday_1, start_time_1, end_time_1, weekday_2, start_time_2, end_time_2, weekday_3, start_time_3, end_time_3, registered, capacity, temp);
+  disp_item(unit, temp);
   
   if (!temp)
-    upstream_add_remove(id, false);
+    upstream_add_remove(unit.id, false);
 }
 
 function rem_item(id, temp) {
@@ -173,7 +168,7 @@ function setup_hover_events() {
 
     }, function(){
       var p = $(this).find("p");
-      var id = p.attr("data-id");
+      var id = p.attr("id").substr(0, 9); // they are like 191110902_data so I strip the trailing chars.
       rem_item(id, true);
   });
 
@@ -185,6 +180,9 @@ function setup_hover_events() {
 $(".unit_select").on('shown.bs.select', setup_hover_events);
 
 $('.unit_select').on('changed.bs.select', function (e, clickedIndex, isSelected, previousValue) {
+  if (!this.options[clickedIndex]) {
+    return; // this happens when the page loads
+  }
   var unit_id = this.options[clickedIndex].text;
   if ( $("#"+unit_id).length > 0 )
   {
