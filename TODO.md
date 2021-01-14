@@ -18,6 +18,8 @@
 - [x] Improve mobile UX
 - [ ] Support more universities
 - [ ] Add badges to selectboxes (full, schedule-interferent, exam-interferent, etc.)
+- [ ] Allow search by group/department in the lazy list
+- [ ] Support more than 3 classes per week
 
 ## Extra
 
@@ -30,8 +32,8 @@
 
 ## Beyond Elmos
 
-- [ ] new columns must be added to database
-- [ ] dbwriter should initialize all tables if needed.
-- [ ] users signup/login must be updated
-- [ ] UI needs update
-- [ ] elmos-specific assets must become easier to configure.
+- [x] new columns must be added to database
+- [x] dbwriter should initialize all tables if needed.
+- [x] users signup/login must be updated
+- [x] UI needs update
+- [x] elmos-specific assets must become easier to configure.
