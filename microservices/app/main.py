@@ -156,10 +156,10 @@ def login_as(email, password):
 
   # If running on subdomain, set a `target_subdomain` cookie for auto-redirect.
   response = make_response( redirect(url_for('schedule')) )
-  subdomain_match = re.findall(r"(\w+)\.\w+\.ir+", request.base_url)
+  subdomain_match = re.findall(r"(\w+)\.(\w+\.ir)", request.base_url)
   if subdomain_match:
     subdomain_basename, parent_domain = subdomain_match[0]
-    response.set_cookie('target_subdomain', subdomain_basename, '.' + parent_domain, expires=2147483647)
+    response.set_cookie('target_subdomain', subdomain_basename, domain=('.' + parent_domain), expires=2147483647)
   return response
   
 @app.route('/logout')
