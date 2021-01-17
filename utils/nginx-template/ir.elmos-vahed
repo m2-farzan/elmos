@@ -1,5 +1,19 @@
 server {
         listen 80;
+        server_name www.elmos-vahed.ir;
+        return 301 https://elmos-vahed.ir$request_uri;
+}
+
+server {
+        listen 443 ssl;
+        server_name www.elmos-vahed.ir;
+        ssl_certificate /etc/letsencrypt/live/elmos-vahed.ir/fullchain.pem;
+        ssl_certificate_key /etc/letsencrypt/live/elmos-vahed.ir/privkey.pem;
+        return 301 https://elmos-vahed.ir$request_uri;
+}
+
+server {
+        listen 80;
         server_name elmos-vahed.ir;
         return 301 https://$host$request_uri;
 }
