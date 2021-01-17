@@ -1,11 +1,12 @@
 #!/usr/bin/python3
 
-from flask import Flask, render_template, send_from_directory, request, session, redirect, url_for, flash, abort
+from flask import Flask, render_template, send_from_directory, request, session, redirect, url_for, flash, abort, make_response
 from flask_mysqldb import MySQL
 from flask_caching import Cache
 from hashlib import md5
 from os import environ
 from random import randint
+import re
 from redis import Redis
 import decimal
 import flask.json
@@ -153,7 +154,13 @@ def login_as(email, password):
   if int(session['user_dep_id']) == 15:
     flash(('yellow', 'فعلا نتونستیم درس نقشه کشی صنعتی رشته صنایع رو توی دیتابیس بیاریم. اطلاعات بیشتر در بخش نواقص دیتابیس موجود است.'))
 
-  return redirect(url_for('schedule'))
+  # If running on subdomain, set a `target_subdomain` cookie for auto-redirect.
+  response = make_response( redirect(url_for('schedule')) )
+  subdomain_match = re.findall(r"(\w+)\.\w+\.ir+", request.base_url)
+  if subdomain_match:
+    subdomain_basename, parent_domain = subdomain_match[0]
+    response.set_cookie('target_subdomain', subdomain_basename, '.' + parent_domain, expires=2147483647)
+  return response
   
 @app.route('/logout')
 def logout():
