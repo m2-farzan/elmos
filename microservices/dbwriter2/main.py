@@ -137,7 +137,7 @@ def main():
     
     redis.append("database_errors", '\n\nغ.ق.اخذ: \n\n')
     with open(DATA_NA_PATH, 'r') as g:
-      fetch_file(g, "غ.ق.اخذ ")
+      fetch_file(g, mycursor, "غ.ق.اخذ ")
 
     try:
       mydb.commit()
