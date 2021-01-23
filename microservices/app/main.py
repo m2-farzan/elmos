@@ -151,9 +151,6 @@ def login_as(email, password):
   session.permanent = True
   cur.close()
 
-  if int(session['user_dep_id']) == 15:
-    flash(('yellow', 'فعلا نتونستیم درس نقشه کشی صنعتی رشته صنایع رو توی دیتابیس بیاریم. اطلاعات بیشتر در بخش نواقص دیتابیس موجود است.'))
-
   # If running on subdomain, set a `target_subdomain` cookie for auto-redirect.
   response = make_response( redirect(url_for('schedule')) )
   subdomain_match = re.findall(r"(\w+)\.(\w+\.ir)", request.base_url)
