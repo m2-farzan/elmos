@@ -14,7 +14,7 @@ function dayToFullDate(day) {
 function getDisplayRange(exams) {
     if (exams.length == 0)
         return [1, 15];
-    days = exams.map(e => e.exam_day)
+    days = exams.map(e => e.exam_day).filter(x => x > 0);
     d0 = Math.min.apply(null, days);
     d1 = Math.max.apply(null, days);
     if (d1 - d0 < 15)
