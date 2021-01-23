@@ -42,7 +42,7 @@
       </tr>
      {% for unit in summary %}
      <tr>
-        <td>{{unit.id}}</td>
+        <td>{{(unit.id|string)[0:2]}}-{{(unit.id|string)[2:4]}}-{{(unit.id|string)[4:7]}}-{{(unit.id|string)[7:9]}}</td>
         <td>{{unit.name}}</td>
         <td>{{unit.weight}}</td>
       </tr>
