@@ -13,18 +13,10 @@ body {
 }
 
 .schedule-table {
-  background-image: url("/images/schedule_table.png");
+  background-image: url("/images/schedule_table.png?v=2");
   background-size: contain;
   width: 55em;
   height: 30em;
-  position: relative;
-}
-
-.exam-table {
-  background-image: url("/images/exam_table_fall99.png");
-  background-size: contain;
-  width: 85em;
-  padding-bottom: 34.8%;
   position: relative;
 }
 
