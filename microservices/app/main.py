@@ -175,8 +175,6 @@ def schedule():
   if not session.get('logged_in', False):
     return render_template('log-in-dude.html')
   else:
-    if int(session['user_dep_id']) == 18:
-        flash(('yellow', 'متاسفانه بعضی از درس‌ها رو نتونستیم به درستی به دیتابیس منتقل کنیم. لطفا از پایین صفحه بخش نواقص دیتابیس را ببینید.'))
     return render_template('schedule.html', user_department=current_user_department, user_units=user_units(), comdeps=comdeps, last_update=last_db_update(), is_supporter=is_supporter(), support_prompt=SUPPORT_PROMPT, captcha_required=captcha_required)
 
 @app.route('/lazy-list')
