@@ -51,7 +51,7 @@ try:
     `instructor` varchar(100) CHARACTER SET utf8mb4 DEFAULT NULL,
     `schedule` varchar(100) NOT NULL,
     `exam_day` int(11) DEFAULT NULL,
-    `exam_time` decimal(10,0) DEFAULT NULL,
+    `exam_time` decimal(10,2) DEFAULT NULL,
     `capacity` int(11) DEFAULT NULL,
     `registered_count` int(11) DEFAULT NULL,
     `weight` int(11) DEFAULT NULL,
