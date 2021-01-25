@@ -5,18 +5,42 @@
 {% endblock %}
 
 {% block body %}
-
   <main role="main" class="inner cover">
     <p class="lead">
 ایمیل یا رمز اشتباه وارد شده. دوباره امتحان کنید.
     </p>
-    <p class="lead">
+    <a href="#" id="fplink" onclick="show_forget_password()">
+رمزم رو فراموش کردم.
+    </a>
+    <div id="forget-password" style="display: none;">
+      <p class="lead">
 متاسفانه فعلا سیستم اینجوریه که اگه رمز رو فراموش کردین باید یه اکانت جدید بسازین.
-    </p>
-    <p class="lead">
+      </p>
+    </div>
+    <p class="lead" style="margin-top: 1em;">
       <a href="/login" class="btn btn-lg btn-secondary">
   برگرد به صفحه لاگین
       </a>
     </p>
+    <a id="forget-password-2" href="#" onclick="show_forget_password_please()" style="margin-top: 1em; display: none;">
+      انصافا هیچ راهی نداره؟
+    </a>
+    <p id="forget-password-please" style="display: none;">
+      اگه واقعا نمیخواین اکانت جدید بسازین میتونین با همون ایمیلی که ثبت نام کردین بهمون ایمیل بدین تا ادمین به صورت خیلی دستی براتون یه رمز جدید تنظیم کنه و بفرسته ولی این ممکنه یه مقداری زمان ببره.
+    </p>
   </main>
+{% endblock %}
+
+{% block extra_css %}
+<script>
+  function show_forget_password() {
+    document.getElementById("forget-password").style.display = 'block';
+    document.getElementById("forget-password-2").style.display = 'block';
+    document.getElementById("fplink").style.display = 'none';
+  }
+
+  function show_forget_password_please() {
+    document.getElementById("forget-password-please").style.display = 'block';
+  }
+</script>
 {% endblock %}
