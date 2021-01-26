@@ -134,3 +134,9 @@ h3 {
   width: 12em;
   font-family: 'Vazir', sans-serif;
 }
+
+.twitter-share-button {
+  vertical-align: middle;
+  height: 25px !important;
+  width: 80px !important;
+}
