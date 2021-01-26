@@ -33,6 +33,8 @@ services:
                         MYSQL_DATABASE: ${DB_DATABASE}
                 volumes:
                         - elmos-database:/var/lib/mysql
+                        - "/etc/timezone:/etc/timezone:ro"
+                        - "/etc/localtime:/etc/localtime:ro"
         redis:
                 image: redis
                 container_name: ${PROJECT_BASENAME}-redis
