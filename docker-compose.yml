@@ -66,8 +66,8 @@ services:
                 restart: always
                 environment:
                         EDU_DOMAIN: ${EDU_DOMAIN}
-                        EDU_USER: ${EDU_USER}
-                        EDU_PASS: ${EDU_PASS}
+                        EDU_USER: "${EDU_USER}"
+                        EDU_PASS: "${EDU_PASS}"
                         EDU_TERM: ${EDU_TERM}
                         GOLMAN_SLEEP: ${GOLMAN_SLEEP}
                 depends_on:
