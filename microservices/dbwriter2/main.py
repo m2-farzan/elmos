@@ -51,6 +51,10 @@ def fetch_file(f, mycursor, prefix = ""):
         dep_id = data['B2'] # for legacy reasons
       else:
         dep_id = data['B2'] + data['B4']
+
+      if data['B2'] in ['24', '32', '33', '34', '35']:
+        continue # skip damavand, noor, pardis, etc.
+
       id_raw = data['C1'] # !
       name = data['C2'] # !
       weight = data['C3'] # !
