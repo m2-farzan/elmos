@@ -34,7 +34,7 @@ app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 app.config['CACHE_TYPE'] = 'simple'
 app.config['CACHE_DEFAULT_TIMEOUT'] = 50
 
-SUPPORT_PROMPT = False
+SUPPORT_PROMPT = environ.get('SUPPORT_PROMPT') or True
 CAPTCHA_LOGIN_PROMPT = True
 CAPTCHA_MAINPAGE_PROMPT = True
 CAPTCHA_MAINPAGE_RAND_COEFF = 1
@@ -284,7 +284,7 @@ def user_units():
   
 @app.route('/exams')
 def exams():
-  return render_template('exams.html', user_exams = user_exams())
+  return render_template('exams.html', user_exams=user_exams(), support_prompt=SUPPORT_PROMPT)
   
 def user_exams():
   cur = mysql.connection.cursor()
@@ -303,7 +303,7 @@ def user_exams():
 @app.route('/summary')
 def summary():
   s, w = user_summary()
-  return render_template('summary.html', summary = s, total_w = w)
+  return render_template('summary.html', summary=s, total_w=w, support_prompt=SUPPORT_PROMPT)
 
 def user_summary():
   total_w = 0

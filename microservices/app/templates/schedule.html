@@ -22,8 +22,8 @@
             <small id="connecting" class="sync invisible">در حال همگام سازی...</small>
           </h3>
           <nav class="nav nav-masthead justify-content-center">
-            {% if is_supporter and support_prompt %}
-            <a class="nav-link" href="https://www.payping.ir/d/rhZC" style="color: greenyellow;">پشتیبانی مالی</a>
+            {% if support_prompt %}
+            <a class="nav-link" href="https://www.payping.ir/d/rhZC" style="color: greenyellow;">حمایت از پروژه 🧡</a>
             {% endif %}
             <a class="nav-link active" href="/schedule">برنامه هفتگی</a>
             <a class="nav-link" href="/exams">برنامه امتحانات</a>
@@ -50,34 +50,6 @@
       {% endif %}
     {% endwith %}
 
-    {% if (not is_supporter) and support_prompt %}
-    <span class="lead" style="border-color: white;
-            border-width: 1px;
-            border-style: solid;
-            border-radius: 6px;
-            padding: 10px 10px;
-            margin: 10px 10px;
-            font-size: 1rem;
-            font-weight: 500;
-            background-color: #0906;
-            width: 64em;">
-      <a>
-اگه از سایت (با تمام باگ‌هاش!) خوشتون اومده، در پرداخت اجاره سرور مشارکت کنید تا بتونیم برای ترم‌های بعد هم اینجا رو داشته باشیم.
-      </a>
-      <a href="https://www.payping.ir/d/rhZC" style="
-        border-radius: 6px;
-        padding: 3px 10px;
-        margin: 0px 5px;
-        font-size: 1rem;
-        font-weight: 800;
-        color: #28ee;
-        background-color: #fff;
-        width: 65em;
-        text-shadow: none;
-      ">پشتیبانی مالی 💙</a>
-    </span>
-    {% endif %}
-    
     <main role="main" class="inner cover">
       <div class="row" style="margin:0px">
         <div class="schedule-table" id="schedule-table">
