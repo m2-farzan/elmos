@@ -85,6 +85,10 @@ def limit_warning(id_raw, limit):
     '1611202', # Physics 1
     '2211277', # Mabani Comp
     '1611123', # Az phys 1
+    '1411087', # Mo'adelat Diff
+    '1411090', # Math 1
+    '1411092', # Math 2
+    '1411089', # Rizmo
   ]
   limit = filter_farsi(limit)
   limit = limit.replace('غیرمجاز', '#نجاز')
