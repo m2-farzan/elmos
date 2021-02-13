@@ -169,12 +169,30 @@ def logout():
 def last_db_update():
   return redis.get('last_db_update') or 'N/A'
 
+def is_affected_by_aghajani_bug():
+  if int(session['user_dep_id']) == 14:
+    return False
+  cur = mysql.connection.cursor()
+  bug = cur.execute("select * from picks_2 where user_id=%s and unit_id=141108751", [session['user_id']])
+  return bug != 0
+
+def add_schedule_page_flash_messages():
+  if is_affected_by_aghajani_bug():
+    flash(('red', """
+در پی گزارش یکی از کاربران، معلوم شد که درس «معادلات دیفرانسیل» استاد «آقاجانی» با کد «141108751» فقط برای رشته ریاضی ارائه شده است. متاسفانه الگوریتم سایت این مورد را تشخیص نداده بود و یادداشت «مخصوص ریاضی» را در کنار اسم درس قرار نداده بود.
+
+متاسفانه شما یکی از ۱۵ نفری هستید که این باگ روی برنامه‌تان اثر گذاشته است. لطفا برنامه خود را اصلاح کنید.
+
+بابت مشکلی که وجود داشت بسیار متاسفیم و امیدواریم در آینده بهتر از این عمل کنیم.
+"""))
+
 @app.route('/schedule')
 def schedule():
   captcha_required = (redis.get('captcha') == 'waiting') and CAPTCHA_MAINPAGE_PROMPT and (randint(0, CAPTCHA_MAINPAGE_RAND_COEFF) == 0)
   if not session.get('logged_in', False):
     return render_template('log-in-dude.html')
   else:
+    add_schedule_page_flash_messages()
     return render_template('schedule.html', user_department=current_user_department, user_units=user_units(), comdeps=comdeps, last_update=last_db_update(), is_supporter=is_supporter(), support_prompt=SUPPORT_PROMPT, captcha_required=captcha_required)
 
 @app.route('/lazy-list')
