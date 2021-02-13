@@ -151,8 +151,6 @@ def login_as(email, password):
   session.permanent = True
   cur.close()
 
-  flash(('green', 'سایت به‌روزرسانی شده و واحدهای ترم جدید (۹۹۲) رو نشون میده.'))
-
   # If running on subdomain, set a `target_subdomain` cookie for auto-redirect.
   response = make_response( redirect(url_for('schedule')) )
   subdomain_match = re.findall(r"(\w+)\.(\w+\.ir)", request.base_url)
