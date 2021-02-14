@@ -75,17 +75,20 @@ def limit_warning(id_raw, limit):
     '90': 'عمومی'
   }
   # Marks if:
-  # (a) Course is from dep x but is available for y
+  # (a) Course is from dep x but is only available for y
   # (b) Course is from dep x and is available for x (only public courses)
-  # (c) any unavailable
-  # (d) 3991 stuff
+  # (c) Course is only unavailable for dep y
+  # (d) Course is only available for 99 students
   publics = [
     '1211320', # Az mabani bargh
     '1411155', # Numerical Analysis
     '1611202', # Physics 1
-    '1611150', # Physics 2
+    '1611117', # Physics 2
+    '1611202', # Physics 1 [new]
+    '1611150', # Physics 2 [new]
     '2211277', # Mabani Comp
     '1611123', # Az phys 1
+    '1611124', # Az phys 2
     '1411087', # Mo'adelat Diff
     '1411090', # Math 1
     '1411092', # Math 2
