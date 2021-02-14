@@ -83,6 +83,7 @@ def limit_warning(id_raw, limit):
     '1211320', # Az mabani bargh
     '1411155', # Numerical Analysis
     '1611202', # Physics 1
+    '1611150', # Physics 2
     '2211277', # Mabani Comp
     '1611123', # Az phys 1
     '1411087', # Mo'adelat Diff
