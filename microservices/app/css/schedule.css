@@ -140,3 +140,56 @@ h3 {
   height: 25px !important;
   width: 80px !important;
 }
+
+.hstack {
+  display: flex;
+  flex-direction: row;
+  min-width: 14em;
+}
+
+.fav-button {
+  background-image: url(/images/bookmark.svg);
+  width: 3em;
+  height: 2.5em;
+  background-size: 50%;
+  background-repeat: no-repeat;
+  background-position: center;
+  margin-right: auto;
+  margin-top: auto;
+  margin-bottom: auto;
+  filter: invert(20%);
+}
+
+.fav-button:hover {
+  filter: invert(27%) sepia(51%) saturate(2878%) hue-rotate(200deg) brightness(104%) contrast(97%);
+}
+
+.dropdown-item .fav-button {
+  visibility: hidden;
+}
+
+.dropdown-item:hover .fav-button {
+  visibility: visible;
+}
+
+.fav-button-selected {
+  background-image: url(/images/bookmark-selected.svg);
+}
+
+.dropdown-item .fav-button-selected {
+  visibility: visible;
+  filter: invert(50%);
+}
+
+.dropdown-item:hover .fav-button-selected {
+  visibility: visible;
+  filter: invert(20%);
+}
+
+.dropdown-item:hover .fav-button-selected:hover {
+  filter: invert(27%) sepia(51%) saturate(2878%) hue-rotate(200deg) brightness(104%) contrast(97%);
+}
+
+.list-row {
+  max-width: 11em;
+}

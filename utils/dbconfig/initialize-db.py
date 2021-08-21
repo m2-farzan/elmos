@@ -89,6 +89,18 @@ except mysql.connector.errors.ProgrammingError as e:
     if 'already exists' in str(e):
         print("Skipped 'picks_2' table as it already exists.")
 
+try:
+    mycursor.execute("""
+    CREATE TABLE `faves` (
+    `user_id` int(11) NOT NULL,
+    `unit_id` int(11) NOT NULL
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+    """)
+    print("Created 'faves' table.")
+except mysql.connector.errors.ProgrammingError as e:
+    if 'already exists' in str(e):
+        print("Skipped 'faves' table as it already exists.")
+
 
 # Forced tables
 

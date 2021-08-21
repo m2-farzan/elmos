@@ -195,6 +195,91 @@ function setup_hover_events() {
 
 $(".unit_select").on('shown.bs.select', setup_hover_events);
 
+function upstream_fav(id, is_remove)
+{
+  var path = "/fav/add/" + id;
+  if (is_remove)
+    path = "/fav/remove/" + id;
+  
+  var xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+     //document.getElementById("demo").innerHTML = this.responseText;
+     if (this.responseText == "done")
+      hide_connecting_icon();
+    }
+  };
+  xhttp.open("GET", path, true);
+  xhttp.send();
+  show_connecting_icon();
+}
+
+add_fav_to_list = function(id, is_remove) {
+  if (is_remove) {
+    $("#fav-in-list-" + id).remove();
+  } else {
+    var p = $("#" + id + "_data");
+    var unit = JSON.parse(unescape(p.attr("data-unit")));
+    $("#fav-select").append(
+      `
+      <option
+      id = "fav-in-list-${unit.id}"
+      data-tokens="${unit.id}"
+      data-content='
+      <p id="${unit.id}_data" class="data_info" data-unit=&#39;${ JSON.stringify(unit) }&#39;>
+      <div class="hstack">
+        <div class="list-row">
+          <p class="list_unit_name">${unit.name}</p>
+          <p class="list_unit_instructor">${unit.instructor}<span class="list_unit_capacity">${unit.registered_count}/${unit.capacity}</span></p>
+        </div>
+        <div class="fav-button fav-button-selected" id="fav-${unit.id}"></div>
+      </div>'
+    
+    >${unit.id}</option>
+      `
+    );
+  }
+  $("#fav-select").selectpicker('refresh');
+  setup_fav_events();
+}
+
+fav = function(e) {
+  my_id = $(this).attr("id") // e.g. fav-191117236
+  course_id = my_id.substr(4);
+
+  isAlreadyFav = $(this).attr("class") === "fav-button fav-button-selected"; // I'm the very definition of evil.
+
+  upstream_fav(course_id, isAlreadyFav);
+  add_fav_to_list(course_id, isAlreadyFav);
+
+  if (!isAlreadyFav) {
+    $(this).addClass("fav-button-selected");
+  } else {
+    $(this).removeClass("fav-button-selected");
+    $("#" + my_id).removeClass("fav-button-selected"); // for the other one in the static list
+  }
+
+  e.stopPropagation();
+  return false;
+}
+
+function setup_fav_events() {;
+  $(".fav-button").unbind('click', fav);
+  $(".fav-button").bind('click', fav);
+}
+
+$(".unit_select").on('shown.bs.select', setup_fav_events);
+
+handle_initial_faves = function() {
+  $("#fav-select > option").each(function() {
+    $("#fav-" + $(this).attr("data-tokens")).addClass("fav-button-selected");
+  })
+}
+
+$(".unit_select").on('shown.bs.select', function() {
+  setTimeout(handle_initial_faves, 200);
+});
+
 $('.unit_select').on('changed.bs.select', function (e, clickedIndex, isSelected, previousValue) {
   if (!this.options[clickedIndex]) {
     return; // this happens when the page loads
@@ -229,6 +314,8 @@ $('#lazy_list').on('show.bs.select', function() {
       $('#lazy_list').html(this.responseText);
       $('#lazy_list').selectpicker('refresh');
       setup_hover_events();
+      setup_fav_events();
+      setTimeout(handle_initial_faves, 200);
       lazy_list_initialized = true;
     }
   };

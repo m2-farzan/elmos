@@ -206,7 +206,7 @@ def schedule():
     return render_template('log-in-dude.html')
   else:
     add_schedule_page_flash_messages()
-    return render_template('schedule.html', user_department=current_user_department, user_units=user_units(), comdeps=comdeps, last_update=last_db_update(), is_supporter=is_supporter(), support_prompt=SUPPORT_PROMPT, captcha_required=captcha_required)
+    return render_template('schedule.html', user_department=current_user_department, user_units=user_units(), user_faves=user_faves(), comdeps=comdeps, last_update=last_db_update(), is_supporter=is_supporter(), support_prompt=SUPPORT_PROMPT, captcha_required=captcha_required)
 
 @app.route('/lazy-list')
 def lazy_list():
@@ -389,6 +389,42 @@ def captcha_code_get():
     redis.set('captcha', 'stale')
   return {'code': code}
 
+@app.route('/fav/add/<unit_id>')
+def fav_add(unit_id):
+  cur = mysql.connection.cursor()
+  j = cur.execute("SELECT * FROM faves WHERE user_id = %s AND unit_id = %s", (session['user_id'], unit_id))
+  if j > 0:
+    return 'dup'
+  cur.execute("INSERT INTO faves(user_id, unit_id) VALUES (%s, %s)", (session['user_id'], unit_id))
+  mysql.connection.commit()
+  cur.close()
+  return "done"
+
+@app.route('/fav/remove/<unit_id>')
+def fav_remove(unit_id):
+  cur = mysql.connection.cursor()
+  cur.execute("DELETE FROM faves WHERE user_id = %s AND unit_id = %s", (session['user_id'], unit_id))
+  mysql.connection.commit()
+  cur.close()
+  return "done"
+  
+def user_faves():
+  cur = mysql.connection.cursor()
+  cur.execute("SELECT * FROM faves WHERE user_id = %s", [ session['user_id'] ])
+  units = cur.fetchall()
+  r = []
+  for unit in units:
+    unit_id = unit['unit_id']
+    cur.execute("SELECT * FROM units WHERE id = %s", [ unit_id ])
+    unit = cur.fetchone();
+    if unit == None:
+      continue
+    disp_name = unit['name'] if unit['obsolete'] == 0 else '[حذف شده] - ' + unit['name']
+    r.append({**dict(unit), 'name':disp_name})
+  cur.execute("UPDATE users SET last_access=NOW() WHERE id = %s", [ session['user_id'] ])
+  mysql.connection.commit()
+  cur.close()
+  return r
 
 if __name__ == '__main__':
   app.run(host="0.0.0.0", port=90, debug=True)
