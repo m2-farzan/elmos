@@ -326,6 +326,8 @@ lazy_list_initialized = false;
 
 $("body").on('DOMSubtreeModified', "#lazy_list_div", function() {
     setup_hover_events();
+    setup_fav_events();
+    setTimeout(handle_initial_faves, 200);
 });
 
 $('.unit_select').on('hidden.bs.select', function () {

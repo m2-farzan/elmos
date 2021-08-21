@@ -161,7 +161,7 @@ h3 {
 }
 
 .fav-button:hover {
-  filter: invert(27%) sepia(51%) saturate(2878%) hue-rotate(200deg) brightness(104%) contrast(97%);
+  filter: invert(27%) sepia(51%) saturate(2878%) hue-rotate(30deg) brightness(150%) contrast(97%);
 }
 
 .dropdown-item .fav-button {
@@ -187,7 +187,7 @@ h3 {
 }
 
 .dropdown-item:hover .fav-button-selected:hover {
-  filter: invert(27%) sepia(51%) saturate(2878%) hue-rotate(200deg) brightness(104%) contrast(97%);
+  filter: invert(27%) sepia(51%) saturate(2878%) hue-rotate(30deg) brightness(150%) contrast(97%);
 }
 
 .list-row {
