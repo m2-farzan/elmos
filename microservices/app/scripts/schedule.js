@@ -350,4 +350,8 @@ if (is_mobile) {
     width: '100%',
     height: '15em',
   });
+
+  $(".unit_select").on('shown.bs.select', function() {
+    $('.fav-button').css('visibility', 'visible');
+  });
 }
