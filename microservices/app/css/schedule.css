@@ -151,9 +151,9 @@ h3 {
   background-image: url(/images/bookmark.svg);
   width: 3em;
   height: 2.5em;
-  background-size: 50%;
+  background-size: 40%;
   background-repeat: no-repeat;
-  background-position: center;
+  background-position: top;
   margin-right: auto;
   margin-top: auto;
   margin-bottom: auto;
