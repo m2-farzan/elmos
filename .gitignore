@@ -2,3 +2,5 @@ data_avail.txt
 data_na.txt
 __pycache__/
 captcha/
+microservices/golman/captcha.gif
+microservices/golman/data*
