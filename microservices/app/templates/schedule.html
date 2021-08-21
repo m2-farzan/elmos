@@ -55,27 +55,7 @@
         </div>
         <div class="left-panel vertical">
           
-          <p>دم دستی ها:</p>
-
-          <div>
-            <select id="fav-select" class="selectpicker unit_select" multiple data-width="18em" data-live-search="true" data-selected-text-format="static" title="نشانه‌گذاری شده">
-            {% for unit in user_faves %}
-              <option
-                id="fav-in-list-{{unit.id}}"
-                data-tokens="{{unit.id}}"
-                data-content='
-                <p id="{{unit.id}}_data" class="data_info" data-unit=&#39;{{ unit|tojson }}&#39;>
-                <div class="hstack">
-                  <div class="list-row">
-                    <p class="list_unit_name">{{unit.name}}</p>
-                    <p class="list_unit_instructor">{{unit.instructor}}<span class="list_unit_capacity">{{unit.registered_count}}/{{unit.capacity}}</span></p>
-                  </div>
-                  <div class="fav-button fav-button-selected" id="fav-{{unit.id}}"></div>
-                </div>'
-              >{{unit.id}}</option>
-            {% endfor %}
-            </select>
-          </div>
+          <p>مربوط به شما:</p>
           
           {% cache 50, session['user_dep_id'], (session['gender']|string), last_update %}
           <div>
@@ -97,6 +77,26 @@
             </select>
           </div>
           {% endcache %}
+
+          <div>
+            <select id="fav-select" class="selectpicker unit_select" multiple data-width="18em" data-live-search="true" data-selected-text-format="static" title="ذخیره شده">
+            {% for unit in user_faves %}
+              <option
+                id="fav-in-list-{{unit.id}}"
+                data-tokens="{{unit.id}}"
+                data-content='
+                <p id="{{unit.id}}_data" class="data_info" data-unit=&#39;{{ unit|tojson }}&#39;>
+                <div class="hstack">
+                  <div class="list-row">
+                    <p class="list_unit_name">{{unit.name}}</p>
+                    <p class="list_unit_instructor">{{unit.instructor}}<span class="list_unit_capacity">{{unit.registered_count}}/{{unit.capacity}}</span></p>
+                  </div>
+                  <div class="fav-button fav-button-selected" id="fav-{{unit.id}}"></div>
+                </div>'
+              >{{unit.id}}</option>
+            {% endfor %}
+            </select>
+          </div>
 
           {% cache 50, (session['gender']|string), last_update %}
 
