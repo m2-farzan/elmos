@@ -193,3 +193,10 @@ h3 {
 .list-row {
   max-width: 11em;
 }
+
+.dropdown-item.active:not(.dropdown-item:active) {
+  background-color: unset;
+  color: unset;
+  /* Beautiful but less intuitive... */
+  /* background-color: #474e54; */
+}
