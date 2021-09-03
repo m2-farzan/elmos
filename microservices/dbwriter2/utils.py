@@ -116,8 +116,8 @@ def limit_warning(id_raw, limit):
         for _, dep in deps.items():
           if dep in criterion:
             r.append( 'غ.مجاز برای  ' + simplify_dep_name(dep) )
-  if '3991 تا 3991' in limit:
-    r.append('مخصوص ورودی ۹۹')
+  if '4001 تا 4001' in limit:
+    r.append('مخصوص ورودی ۱۴۰۰')
 
   if id_raw == '2811027_03':
     r = [r[0]]
