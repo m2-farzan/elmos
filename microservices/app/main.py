@@ -168,7 +168,8 @@ def last_db_update():
   return redis.get('last_db_update') or 'N/A'
 
 def add_schedule_page_flash_messages():
-  flash(('yellow', 'باگ سرعت پایین آپدیت دیتابیس رفع شد. اکنون به جای هر 15 دقیقه، هر 1 دقیقه دیتابیس آپدیت می‌شود. بابت این باگ مهم عذر می‌خواهیم.'))
+  pass
+  # flash(('green', 'سایت به‌روزرسانی شده و واحدهای ترم جدید (پاییز ۱۴۰۰) رو نشون میده.'))
 
 @app.route('/schedule')
 def schedule():
