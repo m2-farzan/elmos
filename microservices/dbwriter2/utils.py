@@ -20,7 +20,7 @@ def extract_weekdays(txt):
   d = txt.count('شنبه')
   if d < 1:
     raise Exception("class time not specified")
-  times = re.findall(r"(شنبه)|(يك شنبه)|(دو شنبه)|(سه شنبه)|(چهار شنبه)|(پنج شنبه)", txt)
+  times = re.findall(r"(شنبه)|(يك شنبه)|(دوشنبه)|(سه شنبه)|(چهارشنبه)|(پنج شنبه)", txt)
   def get_day(tup):
     for i in range(0, len(tup)):
       if tup[i] != '':
