@@ -168,8 +168,7 @@ def last_db_update():
   return redis.get('last_db_update') or 'N/A'
 
 def add_schedule_page_flash_messages():
-  pass
-  # flash(('green', 'سایت به‌روزرسانی شده و واحدهای ترم جدید (پاییز ۱۴۰۰) رو نشون میده.'))
+  flash(('yellow', 'سایت به‌روزرسانی شده و واحدهای ترم جدید (پاییز ۱۴۰۱) رو نشون میده.'))
 
 @app.route('/schedule')
 def schedule():
