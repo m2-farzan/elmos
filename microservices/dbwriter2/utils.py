@@ -124,6 +124,10 @@ def limit_warning(id_raw, limit):
     r.append('مخصوص ورودی ۹۹')
   if '4001 تا 4001' in limit:
     r.append('مخصوص ورودی ۱۴۰۰')
+  if '4011 تا 4011' in limit:
+    r.append('مخصوص ورودی ۱۴۰۱')
+  if '4012 تا 4012' in limit:
+    r.append('مخصوص ورودی ۱۴۰۲')
 
   if id_raw == '2811027_03':
     r = [r[0]]
