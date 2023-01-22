@@ -34,7 +34,7 @@ app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 app.config['CACHE_TYPE'] = 'simple'
 app.config['CACHE_DEFAULT_TIMEOUT'] = 50
 
-SUPPORT_PROMPT = environ.get('SUPPORT_PROMPT') or True
+SUPPORT_PROMPT = environ.get('SUPPORT_PROMPT') or False
 CAPTCHA_LOGIN_PROMPT = True
 CAPTCHA_MAINPAGE_PROMPT = True
 CAPTCHA_MAINPAGE_RAND_COEFF = 1
@@ -168,7 +168,8 @@ def last_db_update():
   return redis.get('last_db_update') or 'N/A'
 
 def add_schedule_page_flash_messages():
-  flash(('yellow', 'سایت به‌روزرسانی شده و واحدهای ترم جدید (پاییز ۱۴۰۱) رو نشون میده.'))
+  # flash(('yellow', 'سایت به‌روزرسانی شده و واحدهای ترم جدید (پاییز ۱۴۰۱) رو نشون میده.'))
+  flash(('red', 'زن، زندگی، آزادی #مهسا_امینی'))
 
 @app.route('/schedule')
 def schedule():
