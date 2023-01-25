@@ -3,12 +3,18 @@
 {% for dep in departments_list() %}
 <optgroup label="{{dep.name}}">
 {% for unit in dep.units %}
-<option 
-
-data-tokens="{{unit.id}}"
-data-content='<p id="{{unit.id}}_data" class="data_info" data-unit=&#39;{{ unit|tojson }}&#39;><div><p class="list_unit_name">{{unit.name}}</p><p class="list_unit_instructor">{{unit.instructor}}<span class="list_unit_capacity">{{unit.registered_count}}/{{unit.capacity}}</span></p></div>'
-
- >{{unit.id}}</option>
+<option
+    data-tokens="{{unit.id}}"
+    data-content='
+    <p id="{{unit.id}}_data" class="data_info" data-unit=&#39;{{ unit|tojson }}&#39;>
+    <div class="hstack">
+        <div class="list-row">
+        <p class="list_unit_name">{{unit.name}}</p>
+        <p class="list_unit_instructor">{{unit.instructor}}<span class="list_unit_capacity">{{unit.registered_count}}/{{unit.capacity}}</span></p>
+        </div>
+        <div class="fav-button" id="fav-{{unit.id}}"></div>
+    </div>'
+>{{unit.id}}</option>
 
 {% endfor %}
 
