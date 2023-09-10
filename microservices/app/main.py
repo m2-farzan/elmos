@@ -169,7 +169,8 @@ def last_db_update():
 
 def add_schedule_page_flash_messages():
   # flash(('yellow', 'سایت به‌روزرسانی شده و واحدهای ترم جدید (پاییز ۱۴۰۱) رو نشون میده.'))
-  flash(('red', 'زن، زندگی، آزادی #مهسا_امینی'))
+  # flash(('red', 'زن، زندگی، آزادی #مهسا_امینی'))
+  pass
 
 @app.route('/schedule')
 def schedule():
