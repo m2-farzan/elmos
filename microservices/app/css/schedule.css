@@ -200,14 +200,3 @@ h3 {
   /* Beautiful but less intuitive... */
   /* background-color: #474e54; */
 }
-
-.xaas {
-  display: flex;
-  justify-content: center;
-  font-weight: bold;
-}
-
-.xaas-logo {
-  width: 70px;
-  margin-right: 1em;
-}

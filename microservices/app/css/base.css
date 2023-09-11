@@ -120,3 +120,14 @@ input, button {
 {
   text-align: right;
 }
+
+.xaas {
+  display: inline-flex;
+  font-weight: bold;
+  margin: 1em 0;
+}
+
+.xaas-logo {
+  width: 70px;
+  margin-right: 1em;
+}
