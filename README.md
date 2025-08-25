@@ -8,6 +8,8 @@
     docker-compose up --build
     ```
 
+3. Read the next section and load the example data to bootstrap the system.
+
 # Database Operations
 
 First load environment variables into shell (always do this after you open a new terminal so that the commands below work):
@@ -19,7 +21,7 @@ export $(xargs <.env)
 Load database from dump:
 
 ```bash
-docker exec -i ${PROJECT_BASENAME}-db mariadb -u$DB_USER -p$DB_PASS $DB_DATABASE < data.sql
+docker exec -i ${PROJECT_BASENAME}-db mariadb -u$DB_USER -p$DB_PASS $DB_DATABASE < example-data.sql
 ```
 
 Save database to dump:
