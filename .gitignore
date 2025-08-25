@@ -1,3 +1,4 @@
+.env
 data_avail.txt
 data_na.txt
 __pycache__/

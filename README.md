@@ -1,6 +1,6 @@
 # Install
 
-1. Enter correct environment values in `.env` file.
+1. Enter correct environment values in `.env` file (use `.env.example` as your reference).
 
 2. Build and run everything:
 
@@ -10,7 +10,7 @@
 
 # Database Operations
 
-First load environment variables into shell:
+First load environment variables into shell (always do this after you open a new terminal so that the commands below work):
 
 ```bash
 export $(xargs <.env)
