@@ -56,6 +56,10 @@ def index():
 def home():
   return render_template('home.html')
 
+@app.route('/retirement-note')
+def retirement_note():
+  return render_template('retirement-note.html')
+
 @app.route('/cheers')
 def cheers():
   set_supporter()
